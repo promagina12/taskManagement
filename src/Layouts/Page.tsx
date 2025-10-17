@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { ScrollView, StyleProp, View, ViewStyle } from "react-native";
 import React, { ReactNode } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../styles/colors";
@@ -12,6 +12,8 @@ interface Props {
   onBackPressed?: () => void | undefined;
   headerType?: string;
   rightComponent?: ReactNode | undefined;
+  containerStyle?: StyleProp<ViewStyle>;
+  headerStyle?: StyleProp<ViewStyle>;
 }
 
 const Page: React.FC<Props> = ({
@@ -21,30 +23,24 @@ const Page: React.FC<Props> = ({
   rightComponent,
   scrollEnabled,
   title,
+  containerStyle,
+  headerStyle,
 }) => {
-  const PageContainer = scrollEnabled ? ScrollView : SafeAreaView;
+  const PageContainer = scrollEnabled ? ScrollView : View;
 
   return (
-    <PageContainer
-      style={{ flex: 1 }}
-      {...(scrollEnabled
-        ? {
-            contentContainerStyle: {
-              paddingHorizontal: 24,
-              backgroundColor: colors.white,
-              flexGrow: 1,
-            },
-          }
-        : {
-            style: {
-              paddingHorizontal: 24,
-              backgroundColor: colors.white,
-              flex: 1,
-            },
-          })}
+    <SafeAreaView
+      style={[
+        {
+          flex: 1,
+          backgroundColor: colors.white,
+          paddingHorizontal: 24,
+        },
+        containerStyle,
+      ]}
     >
       {headerType === "BASE" ? (
-        <BaseHeader />
+        <BaseHeader title={title} headerContainerStyle={headerStyle} />
       ) : headerType === "NONE" ? null : (
         <NavigationHeader
           title={title}
@@ -52,8 +48,22 @@ const Page: React.FC<Props> = ({
           rightComponent={rightComponent}
         />
       )}
-      {children}
-    </PageContainer>
+      <PageContainer
+        {...(scrollEnabled
+          ? {
+              contentContainerStyle: {
+                flexGrow: 1,
+              },
+            }
+          : {
+              style: {
+                flex: 1,
+              },
+            })}
+      >
+        {children}
+      </PageContainer>
+    </SafeAreaView>
   );
 };
 

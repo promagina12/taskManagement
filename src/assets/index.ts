@@ -7,6 +7,7 @@ import chatBox3 from "./images/chatBox3.png";
 import chatBox4 from "./images/chatBox4.png";
 import onboardingNext from "./images/onboardingNext.png";
 import onboardingBG from "./images/onboardingBG.png";
+import linerShadow from "./images/linearShadow.png";
 
 export const placeholder = {
   onboarding1,
@@ -18,4 +19,5 @@ export const placeholder = {
   chatBox4,
   onboardingNext,
   onboardingBG,
+  linerShadow,
 };

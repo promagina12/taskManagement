@@ -1,42 +1,33 @@
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React from "react";
-import Page from "../../Layouts/Page";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
+import Style from "../../styles/Style";
+import Page from "../../Layouts/Page";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import AppleLogoSVG from "../../assets/AppIcon/appleLogo";
 import GoogleLogoSVG from "../../assets/AppIcon/googleLogo";
-import Style from "../../styles/Style";
-import { navigate } from "../../navigation/NavigationService";
-import { ROUTES } from "../../navigation/Routes";
+import { goBack } from "../../navigation/NavigationService";
 
-const Login = () => {
+const Register = () => {
   return (
-    <Page headerType="NAVIGATION" title="Sign In">
+    <Page headerType="NAVIGATION" title="Sign Up">
       <View style={{ flex: 1, paddingTop: 30, gap: 40 }}>
         <View style={{ gap: 2 }}>
-          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.title}>Create Account</Text>
           <Text style={styles.subTitle}>
-            Please Inter your email address{"\n"}and password for Login
+            Please Inter your Informatioin and{"\n"}create your account
           </Text>
         </View>
         <View style={{ gap: 30 }}>
+          <Input placeholder="Enter your name" />
           <Input placeholder="Enter your mail" />
-          <View style={{ gap: 16 }}>
-            <Input type="password" placeholder="Enter your password" />
-            <Pressable style={{ alignSelf: "flex-end" }}>
-              <Text style={styles.forgotPassword}>Forgot Password?</Text>
-            </Pressable>
-          </View>
-          <Button
-            title="Sign In"
-            linearShadow
-            onPress={() => navigate(ROUTES.BottomStack)}
-          />
+          <Input type="password" placeholder="Enter your password" />
+          <Button title="Sign Up" linearShadow />
         </View>
         <View style={{ ...Style.containerCenter, gap: 30 }}>
-          <Text style={styles.signIn}>Signin with</Text>
+          <Text style={styles.signIn}>Signup With</Text>
           <View
             style={{
               ...Style.containerRow,
@@ -63,10 +54,10 @@ const Login = () => {
               fontFamily: FONT_FAMILY.poppinsRegular,
             }}
           >
-            Not Registrar Yet?{" "}
+            Have an Account?{" "}
           </Text>
-          <Pressable onPress={() => navigate(ROUTES.Register)}>
-            <Text style={styles.signUp}>Sign Up</Text>
+          <Pressable onPress={goBack}>
+            <Text style={styles.signUp}>Sign In</Text>
           </Pressable>
         </View>
       </View>
@@ -74,7 +65,7 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
 
 const styles = StyleSheet.create({
   title: {
