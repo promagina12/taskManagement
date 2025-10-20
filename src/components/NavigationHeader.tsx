@@ -8,7 +8,7 @@ import { goBack } from "../navigation/NavigationService";
 
 interface Props {
   title?: string;
-  rightComponent?: any;
+  rightComponent?: () => ReactNode;
   onBackPressed?: () => void | undefined;
 }
 

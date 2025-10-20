@@ -8,6 +8,9 @@ import chatBox4 from "./images/chatBox4.png";
 import onboardingNext from "./images/onboardingNext.png";
 import onboardingBG from "./images/onboardingBG.png";
 import linerShadow from "./images/linearShadow.png";
+import teamCardBG from "./images/teamCardBG.png";
+import avatar from "./images/avatar.jpg";
+import spacer from "./images/spacer.png";
 
 export const placeholder = {
   onboarding1,
@@ -20,4 +23,7 @@ export const placeholder = {
   onboardingNext,
   onboardingBG,
   linerShadow,
+  teamCardBG,
+  avatar,
+  spacer,
 };

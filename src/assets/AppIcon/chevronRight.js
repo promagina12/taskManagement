@@ -11,7 +11,7 @@ const ChevronRightSVG = (props) => (
   >
     <Path
       d="M8.5 19L15.5 12L8.5 5"
-      stroke="#756EF3"
+      stroke={props.color ?? "#756EF3"}
       strokeWidth={1.5}
       strokeLinecap="round"
       strokeLinejoin="round"

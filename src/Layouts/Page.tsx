@@ -11,7 +11,7 @@ interface Props {
   children?: ReactNode | undefined;
   onBackPressed?: () => void | undefined;
   headerType?: string;
-  rightComponent?: ReactNode | undefined;
+  rightComponent?: () => ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
 }
