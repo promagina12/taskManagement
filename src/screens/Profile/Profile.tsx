@@ -1,14 +1,16 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import React, { act } from "react";
+import React from "react";
 import Page from "../../Layouts/Page";
 import { placeholder } from "../../assets";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
 import Style from "../../styles/Style";
 import TaskContainer from "../Projects/components/TaskContainer";
-import ClockSVG from "../../assets/AppIcon/clock";
 import CheckSVG from "../../assets/AppIcon/check";
 import SettingsButton from "../../components/SettingsButton";
+import ClockSquareSVG from "../../assets/AppIcon/clockSquare";
+import { navigate } from "../../navigation/NavigationService";
+import { ROUTES } from "../../navigation/Routes";
 
 const BUTTONS = [
   {
@@ -21,7 +23,7 @@ const BUTTONS = [
   },
   {
     title: "Settings",
-    action: () => {},
+    action: () => navigate(ROUTES.Settings),
   },
   {
     title: "My Task",
@@ -42,13 +44,20 @@ const Profile = () => {
             <View style={Style.containerCenter}>
               <Text style={styles.name}>John Doe</Text>
               <Text style={styles.email}>johndoe@example.com</Text>
-              <Pressable style={styles.editButton}>
+              <Pressable
+                style={styles.editButton}
+                onPress={() => navigate(ROUTES.EditProfile)}
+              >
                 <Text style={styles.edit}>Edit</Text>
               </Pressable>
             </View>
           </View>
           <View style={{ ...Style.containerRow }}>
-            <TaskContainer icon={<ClockSVG />} count="5" subtitle="On Going" />
+            <TaskContainer
+              icon={<ClockSquareSVG />}
+              count="5"
+              subtitle="On Going"
+            />
             <Image source={placeholder.spacer} style={{ height: "100%" }} />
             <TaskContainer
               icon={<CheckSVG />}

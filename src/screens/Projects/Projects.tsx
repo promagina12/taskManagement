@@ -9,6 +9,8 @@ import { FONT_FAMILY } from "../../styles/fonts";
 import GridSVG from "../../assets/AppIcon/grid";
 import FilterButton from "./components/FilterButton";
 import ProjectsCard from "./components/ProjectsCard";
+import { navigate } from "../../navigation/NavigationService";
+import { ROUTES } from "../../navigation/Routes";
 
 const FILTER = ["Favourites", "Recents", "All"];
 
@@ -26,7 +28,10 @@ const Projects = () => {
       )}
     >
       <View style={{ flex: 1, paddingTop: 20, gap: 30 }}>
-        <SearchBar placeholder="Search" />
+        <SearchBar
+          placeholder="Search"
+          onPress={() => navigate(ROUTES.Search)}
+        />
         <View style={Style.containerSpaceBetween}>
           <View style={{ ...Style.containerRow, gap: 16 }}>
             {FILTER.map((item, index) => (

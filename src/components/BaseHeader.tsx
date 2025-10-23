@@ -5,13 +5,20 @@ import BellSVG from "../assets/AppIcon/bell";
 import Style from "../styles/Style";
 import { colors } from "../styles/colors";
 import { FONT_FAMILY } from "../styles/fonts";
+import { navigate } from "../navigation/NavigationService";
+import { ROUTES } from "../navigation/Routes";
 
 interface Props {
   title?: string;
   headerContainerStyle: StyleProp<ViewStyle>;
+  onPressTitle?: () => void;
 }
 
-const BaseHeader: React.FC<Props> = ({ title, headerContainerStyle }) => {
+const BaseHeader: React.FC<Props> = ({
+  title,
+  headerContainerStyle,
+  onPressTitle,
+}) => {
   return (
     <View
       style={[
@@ -34,20 +41,23 @@ const BaseHeader: React.FC<Props> = ({ title, headerContainerStyle }) => {
             ...Style.containerCenter,
             borderColor: colors.lightBlue,
           }}
+          onPress={() => navigate(ROUTES.ManageProfile)}
         >
           <GridSVG />
         </Pressable>
       </View>
-      <Text
-        style={{
-          fontSize: 18,
-          color: colors.darkBlue,
-          fontFamily: FONT_FAMILY.poppinsMedium,
-          top: 3,
-        }}
-      >
-        {title}
-      </Text>
+      <Pressable onPress={onPressTitle}>
+        <Text
+          style={{
+            fontSize: 18,
+            color: colors.darkBlue,
+            fontFamily: FONT_FAMILY.poppinsMedium,
+            top: 3,
+          }}
+        >
+          {title}
+        </Text>
+      </Pressable>
       <View style={{ flex: 1, alignItems: "flex-end" }}>
         <Pressable
           style={{

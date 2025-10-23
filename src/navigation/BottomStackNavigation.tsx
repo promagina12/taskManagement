@@ -1,12 +1,10 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { ROUTES } from "./Routes";
-import Home from "../screens/Home/Home";
 import Projects from "../screens/Projects/Projects";
 import Chat from "../screens/Chat/Chat";
 import Profile from "../screens/Profile/Profile";
 import TabBar from "./TabBar";
-import { Pressable, Text } from "react-native";
 import HomeSVG from "../assets/AppIcon/home";
 import HomeOutlineSVG from "../assets/AppIcon/homeOutline";
 import ProjectsSVG from "../assets/AppIcon/projects";
@@ -15,7 +13,7 @@ import ChatSVG from "../assets/AppIcon/Chat";
 import ChatOutlineSVG from "../assets/AppIcon/ChatOutline";
 import ProfileSVG from "../assets/AppIcon/profile";
 import ProfileOutlineSVG from "../assets/AppIcon/profileOutline";
-import CreateTaskButton from "../components/navigation/CreateTaskButton";
+import HomeStack from "./HomeStack";
 
 const BottomStack = createBottomTabNavigator();
 
@@ -33,8 +31,8 @@ const BottomStackNavigation = () => {
       tabBar={(props) => <TabBar {...props} />}
     >
       <BottomStack.Screen
-        name={ROUTES.Home}
-        component={Home}
+        name={ROUTES.HomeStack}
+        component={HomeStack}
         options={{
           tabBarIcon: ({ focused }) =>
             focused ? <HomeSVG /> : <HomeOutlineSVG />,

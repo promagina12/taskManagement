@@ -1,4 +1,4 @@
-import { View, Text, TextInput } from "react-native";
+import { View, Text, TextInput, Pressable } from "react-native";
 import React, { useState } from "react";
 import SearchSVG from "../assets/AppIcon/search";
 import Style from "../styles/Style";
@@ -9,13 +9,21 @@ interface Props {
   value?: string;
   onChangeText?: ((text: string) => void) | undefined;
   placeholder?: string;
+  onPress?: () => void;
 }
 
-const SearchBar: React.FC<Props> = ({ onChangeText, value, placeholder }) => {
+const SearchBar: React.FC<Props> = ({
+  onChangeText,
+  value,
+  placeholder,
+  onPress,
+}) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
 
+  const Container = onPress ? Pressable : View;
+
   return (
-    <View
+    <Container
       style={{
         ...Style.containerRow,
         gap: 10,
@@ -26,6 +34,7 @@ const SearchBar: React.FC<Props> = ({ onChangeText, value, placeholder }) => {
         ...Style.containerRow,
         paddingVertical: 5,
       }}
+      onPress={onPress}
     >
       <SearchSVG />
       <TextInput
@@ -41,8 +50,9 @@ const SearchBar: React.FC<Props> = ({ onChangeText, value, placeholder }) => {
         }}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
+        editable={!onPress}
       />
-    </View>
+    </Container>
   );
 };
 

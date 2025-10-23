@@ -5,17 +5,20 @@ import ChevronLeftSVG from "../assets/AppIcon/chevronLeft";
 import { colors } from "../styles/colors";
 import { FONT_FAMILY } from "../styles/fonts";
 import { goBack } from "../navigation/NavigationService";
+import CloseSVG from "../assets/AppIcon/close";
 
 interface Props {
   title?: string;
   rightComponent?: () => ReactNode;
   onBackPressed?: () => void | undefined;
+  isClose?: boolean;
 }
 
 const NavigationHeader: React.FC<Props> = ({
   onBackPressed,
   rightComponent,
   title,
+  isClose,
 }) => {
   const handleBackPress = () => {
     if (onBackPressed) {
@@ -46,7 +49,7 @@ const NavigationHeader: React.FC<Props> = ({
           }}
           onPress={handleBackPress}
         >
-          <ChevronLeftSVG />
+          {isClose ? <CloseSVG color={colors.darkBlue} /> : <ChevronLeftSVG />}
         </Pressable>
       </View>
       <Text

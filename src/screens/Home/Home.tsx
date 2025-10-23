@@ -16,6 +16,8 @@ import { responsiveWidth } from "react-native-responsive-dimensions";
 import ChevronRightSVG from "../../assets/AppIcon/chevronRight";
 import Style from "../../styles/Style";
 import ProgressCard from "./components/ProgressCard";
+import { navigate } from "../../navigation/NavigationService";
+import { ROUTES } from "../../navigation/Routes";
 
 const Home = () => {
   const viewabilityConfig = useRef({
@@ -43,6 +45,7 @@ const Home = () => {
       scrollEnabled
       containerStyle={{ paddingHorizontal: 0 }}
       headerStyle={{ paddingHorizontal: 24 }}
+      onPressTitle={() => navigate(ROUTES.Calendar)}
     >
       <View style={{ flex: 1, gap: 30, paddingHorizontal: 24, paddingTop: 20 }}>
         <Text style={styles.title}>Let’s make a{"\n"}habits together 🙌</Text>
@@ -69,7 +72,7 @@ const Home = () => {
         <View style={{ gap: 20 }}>
           <View style={Style.containerSpaceBetween}>
             <Text style={styles.inProgressTitle}>In Progress</Text>
-            <Pressable>
+            <Pressable onPress={() => navigate(ROUTES.TaskStatus)}>
               <ChevronRightSVG />
             </Pressable>
           </View>

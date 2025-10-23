@@ -14,6 +14,8 @@ interface Props {
   rightComponent?: () => ReactNode;
   containerStyle?: StyleProp<ViewStyle>;
   headerStyle?: StyleProp<ViewStyle>;
+  bottomComponent?: () => ReactNode;
+  onPressTitle?: () => void;
 }
 
 const Page: React.FC<Props> = ({
@@ -25,6 +27,8 @@ const Page: React.FC<Props> = ({
   title,
   containerStyle,
   headerStyle,
+  bottomComponent,
+  onPressTitle,
 }) => {
   const PageContainer = scrollEnabled ? ScrollView : View;
 
@@ -40,12 +44,17 @@ const Page: React.FC<Props> = ({
       ]}
     >
       {headerType === "BASE" ? (
-        <BaseHeader title={title} headerContainerStyle={headerStyle} />
+        <BaseHeader
+          title={title}
+          headerContainerStyle={headerStyle}
+          onPressTitle={onPressTitle}
+        />
       ) : headerType === "NONE" ? null : (
         <NavigationHeader
           title={title}
           onBackPressed={onBackPressed}
           rightComponent={rightComponent}
+          isClose={headerType === "CLOSE"}
         />
       )}
       <PageContainer
@@ -63,6 +72,7 @@ const Page: React.FC<Props> = ({
       >
         {children}
       </PageContainer>
+      {bottomComponent?.()}
     </SafeAreaView>
   );
 };
