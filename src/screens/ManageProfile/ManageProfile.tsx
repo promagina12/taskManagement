@@ -6,16 +6,28 @@ import { placeholder } from "../../assets";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
 import ManageCard from "./components/ManageCard";
-import { goBack } from "../../navigation/NavigationService";
+import { goBack, reset } from "../../navigation/NavigationService";
 import Button from "../../components/Button";
+import { useUserData } from "../../providers/UserDataProvider";
+import { ROUTES } from "../../navigation/Routes";
 
 const ManageProfile = () => {
+  const { onSignOut } = useUserData();
+
+  const onLogOut = async () => {
+    await onSignOut();
+    reset({
+      index: 0,
+      routes: [{ name: ROUTES.Login }],
+    });
+  };
+
   return (
     <Page
       headerType="CLOSE"
       bottomComponent={() => (
         <View style={{ paddingVertical: 10 }}>
-          <Button title="Log Out" onPress={goBack} />
+          <Button title="Log Out" onPress={onLogOut} />
         </View>
       )}
     >

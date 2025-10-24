@@ -12,6 +12,10 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./src/navigation/NavigationService";
 import MainStack from "./src/navigation/MainStack";
+import UserDataProvider from "./src/providers/UserDataProvider";
+import TaskDataProvider from "./src/providers/TaskDataProvider";
+import Toast from 'react-native-toast-message';
+
 
 export default function App() {
   const [loaded] = useFonts({
@@ -30,11 +34,16 @@ export default function App() {
       <StatusBar />
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaProvider>
-          <NavigationContainer ref={navigationRef}>
-            <MainStack />
-          </NavigationContainer>
+          <UserDataProvider>
+            <TaskDataProvider>
+              <NavigationContainer ref={navigationRef}>
+                <MainStack />
+              </NavigationContainer>
+            </TaskDataProvider>
+          </UserDataProvider>
         </SafeAreaProvider>
       </GestureHandlerRootView>
+      <Toast />
     </>
   );
 }

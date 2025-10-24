@@ -22,3 +22,5 @@ export const CreateRouteList = (
 
   return routeList;
 };
+
+export const BOARD = ["Urgent", "Running", "ongoing"];

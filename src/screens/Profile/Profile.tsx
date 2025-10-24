@@ -11,6 +11,7 @@ import SettingsButton from "../../components/SettingsButton";
 import ClockSquareSVG from "../../assets/AppIcon/clockSquare";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
+import { useUserData } from "../../providers/UserDataProvider";
 
 const BUTTONS = [
   {
@@ -32,6 +33,12 @@ const BUTTONS = [
 ];
 
 const Profile = () => {
+  const { currentUserData, currentUID } = useUserData();
+
+  console.log("currentUserData: ", currentUserData);
+  console.log("currentUID: ", currentUID);
+
+
   return (
     <Page headerType="NAVIGATION" title="Profile" scrollEnabled>
       <View style={{ flex: 1, paddingTop: 20, gap: 37 }}>

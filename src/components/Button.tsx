@@ -16,7 +16,7 @@ import DropShadow from "react-native-drop-shadow";
 interface Props {
   linearShadow?: boolean;
   title?: string;
-  onPress?: () => void | undefined;
+  onPress?: () => void;
   containerStyle?: StyleProp<ViewStyle>;
 }
 

@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
 import Style from "../../styles/Style";
@@ -9,8 +9,29 @@ import Button from "../../components/Button";
 import AppleLogoSVG from "../../assets/AppIcon/appleLogo";
 import GoogleLogoSVG from "../../assets/AppIcon/googleLogo";
 import { goBack } from "../../navigation/NavigationService";
+import { useUserData } from "../../providers/UserDataProvider";
 
 const Register = () => {
+  const { registerUser } = useUserData();
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [name, setName] = useState<string>("");
+
+  const onRegister = async () => {
+    try {
+      const data = {
+        email,
+        password,
+        name,
+      };
+
+      await registerUser(data as any);
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
   return (
     <Page headerType="NAVIGATION" title="Sign Up">
       <View style={{ flex: 1, paddingTop: 30, gap: 40 }}>
@@ -21,10 +42,23 @@ const Register = () => {
           </Text>
         </View>
         <View style={{ gap: 30 }}>
-          <Input placeholder="Enter your name" />
-          <Input placeholder="Enter your mail" />
-          <Input type="password" placeholder="Enter your password" />
-          <Button title="Sign Up" linearShadow />
+          <Input
+            placeholder="Enter your name"
+            value={name}
+            onChangeText={setName}
+          />
+          <Input
+            placeholder="Enter your mail"
+            value={email}
+            onChangeText={setEmail}
+          />
+          <Input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChangeText={setPassword}
+          />
+          <Button title="Sign Up" linearShadow onPress={onRegister} />
         </View>
         <View style={{ ...Style.containerCenter, gap: 30 }}>
           <Text style={styles.signIn}>Signup With</Text>

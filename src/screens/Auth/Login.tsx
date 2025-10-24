@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import Page from "../../Layouts/Page";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
@@ -10,8 +10,20 @@ import GoogleLogoSVG from "../../assets/AppIcon/googleLogo";
 import Style from "../../styles/Style";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
+import { signInWithEmail } from "../../utils/signInWithEmail";
 
 const Login = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const onLogin = async () => {
+    try {
+      await signInWithEmail(email, password);
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
   return (
     <Page headerType="NAVIGATION" title="Sign In">
       <View style={{ flex: 1, paddingTop: 30, gap: 40 }}>
@@ -22,18 +34,23 @@ const Login = () => {
           </Text>
         </View>
         <View style={{ gap: 30 }}>
-          <Input placeholder="Enter your mail" />
+          <Input
+            placeholder="Enter your mail"
+            value={email}
+            onChangeText={setEmail}
+          />
           <View style={{ gap: 16 }}>
-            <Input type="password" placeholder="Enter your password" />
+            <Input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChangeText={setPassword}
+            />
             <Pressable style={{ alignSelf: "flex-end" }}>
               <Text style={styles.forgotPassword}>Forgot Password?</Text>
             </Pressable>
           </View>
-          <Button
-            title="Sign In"
-            linearShadow
-            onPress={() => navigate(ROUTES.BottomStack)}
-          />
+          <Button title="Sign In" linearShadow onPress={onLogin} />
         </View>
         <View style={{ ...Style.containerCenter, gap: 30 }}>
           <Text style={styles.signIn}>Signin with</Text>
