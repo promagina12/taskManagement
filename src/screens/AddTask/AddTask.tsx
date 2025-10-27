@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Page from "../../Layouts/Page";
 import Input from "../../components/Input";
 import TeamMember from "./components/TeamMember";
@@ -15,13 +15,21 @@ import { BOARD } from "../../utils";
 import { TaskFormData } from "../../interface/task";
 import Toast from "react-native-toast-message";
 import { addTaskSchema } from "../../utils/schema";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "../../interface/stack";
+
+type Props = RouteProp<RootStackParamList, "AddTask">;
 
 const AddTask = () => {
-  const { createTask } = useTaskData();
+  const params = useRoute<Props>()?.params;
+  const { actions, data, itemId } = params || {};
+
+  const { createTask, updateTaskbyId, getTaskbyId } = useTaskData();
 
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<TaskFormData>({
     defaultValues: {
@@ -35,22 +43,49 @@ const AddTask = () => {
 
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (actions === "edit") {
+      getTaskbyId(itemId, (task) => {
+        setValue("name", task?.name!);
+        setValue("date", task?.date?.toDate()!);
+        setValue("start_time", task?.start_time?.toDate()!);
+        setValue("end_time", task?.end_time?.toDate()!);
+      });
+    } else {
+      setValue("date", new Date());
+      setValue("start_time", new Date());
+      setValue("end_time", new Date());
+    }
+  }, [actions, data, itemId]);
+
   const onCreateTask = async (data: TaskFormData) => {
     try {
-      const newTask = await createTask(data);
+      await createTask(data);
 
-      if (newTask) {
-        Toast.show({
-          type: "success",
-          text1: "Sucess",
-          text2: "Task has been created successfully",
-        });
+      Toast.show({
+        type: "success",
+        text1: "Sucess",
+        text2: "Task has been created successfully",
+      });
 
-        goBack();
-      }
+      goBack();
     } catch (error) {
       console.log("ERROR: ", error);
     }
+  };
+
+  const onUpdateTask = async (data: TaskFormData) => {
+    try {
+      await updateTaskbyId(data, itemId);
+
+      Toast.show({
+        type: "success",
+        text1: "Sucess",
+        text2: "Task has been updated successfully",
+      });
+
+      goBack();
+    } catch (error) {}
   };
 
   const onSubmit = () => {
@@ -75,13 +110,18 @@ const AddTask = () => {
         text2: errors.date?.message,
       });
     }
-    handleSubmit(onCreateTask)();
+
+    if (actions === "edit") {
+      handleSubmit(onUpdateTask)();
+    } else {
+      handleSubmit(onCreateTask)();
+    }
   };
 
   return (
     <Page
       headerType="NAVIGATION"
-      title="Add Task"
+      title={`${actions === "edit" ? "Edit" : "Add"} Task`}
       bottomComponent={() => (
         <View style={{ paddingVertical: 10, alignItems: "center" }}>
           <Button

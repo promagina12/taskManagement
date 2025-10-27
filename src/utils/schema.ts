@@ -28,3 +28,16 @@ export const addTaskSchema = yup
       ),
   })
   .required();
+
+export const taskSchema = yup
+  .object({
+    name: yup.string().required("Name is required"),
+  })
+  .required();
+
+export const profileSchema = yup.object({
+  name: yup.string().required("Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  username: yup.string().required("Username is required"),
+  number: yup.string().required("Number is required"),
+});

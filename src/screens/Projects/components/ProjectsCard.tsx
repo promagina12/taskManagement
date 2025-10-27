@@ -6,12 +6,16 @@ import Style from "../../../styles/Style";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { placeholder } from "../../../assets";
 
-const ProjectsCard = () => {
+interface Props {
+  title?: string;
+}
+
+const ProjectsCard: React.FC<Props> = ({ title }) => {
   return (
     <View style={styles.container}>
       <View>
         <View style={Style.containerSpaceBetween}>
-          <Text style={styles.title}>Unity Dashboard ☺</Text>
+          <Text style={styles.title}>{title}</Text>
           <View style={styles.progressContainer}>
             <Text style={styles.progress}>10/20</Text>
           </View>
@@ -81,8 +85,6 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 100,
-    borderWidth: 2,
-    borderColor: colors.white,
     position: "absolute",
   },
 });

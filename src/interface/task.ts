@@ -1,7 +1,7 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 
 export interface ITask {
-  name: string;
+  name?: string;
   date?: FirebaseFirestoreTypes.Timestamp;
   date_created?: FirebaseFirestoreTypes.Timestamp;
   date_updated?: FirebaseFirestoreTypes.Timestamp;

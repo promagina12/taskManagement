@@ -4,7 +4,6 @@ export const CreateRouteList = (
   routes: NavigationRoute<ParamListBase, string>[]
 ) => {
   const routeList = routes?.map((route, routeIndex) => {
-    console.log("CreateRouteList: ", route);
     return {
       routeIndex,
       name: route.name,

@@ -1,5 +1,5 @@
+import React from "react";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet } from "react-native";
 import { useFonts } from "expo-font";
 import {
   Poppins_400Regular,
@@ -14,8 +14,8 @@ import { navigationRef } from "./src/navigation/NavigationService";
 import MainStack from "./src/navigation/MainStack";
 import UserDataProvider from "./src/providers/UserDataProvider";
 import TaskDataProvider from "./src/providers/TaskDataProvider";
-import Toast from 'react-native-toast-message';
-
+import Toast from "react-native-toast-message";
+import TeamDataProvider from "./src/providers/TeamDataProvider";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -36,9 +36,11 @@ export default function App() {
         <SafeAreaProvider>
           <UserDataProvider>
             <TaskDataProvider>
-              <NavigationContainer ref={navigationRef}>
-                <MainStack />
-              </NavigationContainer>
+              <TeamDataProvider>
+                <NavigationContainer ref={navigationRef}>
+                  <MainStack />
+                </NavigationContainer>
+              </TeamDataProvider>
             </TaskDataProvider>
           </UserDataProvider>
         </SafeAreaProvider>
@@ -47,12 +49,3 @@ export default function App() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

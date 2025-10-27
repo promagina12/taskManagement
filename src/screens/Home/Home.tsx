@@ -6,7 +6,7 @@ import {
   ViewToken,
   Pressable,
 } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Page from "../../Layouts/Page";
 import moment from "moment";
 import { colors } from "../../styles/colors";
@@ -18,14 +18,19 @@ import Style from "../../styles/Style";
 import ProgressCard from "./components/ProgressCard";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
+import { useTaskData } from "../../providers/TaskDataProvider";
+import { ITask } from "../../interface/task";
 
 const Home = () => {
+  const flatlistRef = useRef<FlatList>(null);
   const viewabilityConfig = useRef({
-    minimumViewTime: 300, // Time in milliseconds before an item is considered viewable
-    itemVisiblePercentThreshold: 50, // Percentage of the item that must be visible
+    minimumViewTime: 300,
+    itemVisiblePercentThreshold: 50,
   }).current;
+  const { getUserTasks, tasks, setTasks } = useTaskData();
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+  const [newTask, setNewTask] = useState<ITask[]>([]);
 
   const onViewableItemsChanged = useCallback(
     ({ viewableItems }: { viewableItems: ViewToken[] }) => {
@@ -39,6 +44,13 @@ const Home = () => {
 
   const snapInterval = responsiveWidth(60) + 20;
 
+  useEffect(() => {
+    getUserTasks((tasks) => {
+      setTasks(tasks);
+      setNewTask([...tasks, { id: "Empty" }])
+    });
+  }, []);
+
   return (
     <Page
       title={moment().format("dddd, DD")}
@@ -51,14 +63,34 @@ const Home = () => {
         <Text style={styles.title}>Let’s make a{"\n"}habits together 🙌</Text>
         <View style={{ width: responsiveWidth(100), left: -24 }}>
           <FlatList
+            ref={flatlistRef}
             horizontal
-            data={Array.from({ length: 5 })}
+            data={newTask}
             renderItem={({ item, index }) => {
-              if (Array.from({ length: 5 }).length - 1 === index) {
-                return <View style={{ width: responsiveWidth(60) }} />;
+              if (item.id === "Empty") {
+                return <View style={{ width: responsiveWidth(30) }} />;
               }
 
-              return <TeamCard selected={selectedIndex === index} />;
+              return (
+                <TeamCard
+                  selected={selectedIndex === index}
+                  name={item.name}
+                  onPress={() => {
+                    if (selectedIndex === index) {
+                      navigate(ROUTES.AddTask, {
+                        actions: "edit",
+                        itemId: item.id,
+                        data: item,
+                      });
+                    } else {
+                      flatlistRef.current?.scrollToIndex({
+                        animated: true,
+                        index,
+                      });
+                    }
+                  }}
+                />
+              );
             }}
             contentContainerStyle={{ gap: 16, paddingHorizontal: 24 }}
             showsHorizontalScrollIndicator={false}
@@ -77,8 +109,12 @@ const Home = () => {
             </Pressable>
           </View>
           <View style={{ gap: 16 }}>
-            {Array.from({ length: 3 }).map((_, index) => (
-              <ProgressCard key={index} />
+            {tasks.map((item, index) => (
+              <ProgressCard
+                key={index}
+                title={item.name}
+                time={moment(item.start_time).fromNow()}
+              />
             ))}
           </View>
         </View>

@@ -1,14 +1,32 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Page from "../../Layouts/Page";
 import SearchBar from "../../components/SearchBar";
 import Style from "../../styles/Style";
 import { colors } from "../../styles/colors";
 import ProjectsCard from "../Projects/components/ProjectsCard";
+import { useTaskData } from "../../providers/TaskDataProvider";
+import { debounce } from "lodash";
 
 const Search = () => {
+  const { searchTaskbyName } = useTaskData();
   const [searchText, setSearchText] = useState<string>("");
   const [selectedFilter, setSelectedFilter] = useState<string>("Task");
+
+  const onFetchSearch = async () => {
+    if (searchText.length > 0) {
+      const response = await searchTaskbyName(searchText);
+      console.log("response: ", response);
+    }
+  };
+
+  const debounceSearchResults = useCallback(() => {
+    debounce(onFetchSearch, 500);
+  }, []);
+
+  useEffect(() => {
+    debounceSearchResults();
+  }, [searchText]);
 
   return (
     <Page headerType="NAVIGATION" title="Search">

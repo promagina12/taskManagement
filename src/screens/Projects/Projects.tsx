@@ -1,20 +1,21 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import Page from "../../Layouts/Page";
 import Style from "../../styles/Style";
 import { colors } from "../../styles/colors";
 import AddSVG from "../../assets/AppIcon/add";
 import SearchBar from "../../components/SearchBar";
-import { FONT_FAMILY } from "../../styles/fonts";
 import GridSVG from "../../assets/AppIcon/grid";
 import FilterButton from "./components/FilterButton";
 import ProjectsCard from "./components/ProjectsCard";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
+import { useTaskData } from "../../providers/TaskDataProvider";
 
 const FILTER = ["Favourites", "Recents", "All"];
 
 const Projects = () => {
+  const { tasks } = useTaskData();
   const [selectedFilter, setSelectedFilter] = useState<string>(FILTER[0]);
 
   return (
@@ -26,6 +27,7 @@ const Projects = () => {
           <AddSVG color={colors.darkBlue} size={20} />
         </Pressable>
       )}
+      scrollEnabled
     >
       <View style={{ flex: 1, paddingTop: 20, gap: 30 }}>
         <SearchBar
@@ -47,8 +49,11 @@ const Projects = () => {
             <GridSVG size={24} color={colors.gray2} />
           </Pressable>
         </View>
-        <View>
-          <ProjectsCard />
+        <View style={{ gap: 30 }}>
+          {tasks &&
+            tasks.map((item, index) => (
+              <ProjectsCard key={index} title={item.name} />
+            ))}
         </View>
       </View>
     </Page>

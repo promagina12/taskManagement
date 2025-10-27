@@ -5,13 +5,18 @@ import Style from "../../../styles/Style";
 import { colors } from "../../../styles/colors";
 import { FONT_FAMILY } from "../../../styles/fonts";
 
-const ProgressCard = () => {
+interface Props {
+  title?: string;
+  time?: string;
+}
+
+const ProgressCard: React.FC<Props> = ({ title, time }) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}>
-        <Text style={styles.regText}>ProgressCard</Text>
-        <Text style={styles.medText}>Create Detail Booking</Text>
-        <Text style={styles.regText}>2 min ago</Text>
+        <Text style={styles.regText}>{title}</Text>
+        <Text style={styles.medText}>{title}</Text>
+        <Text style={styles.regText}>{time}</Text>
       </View>
       <Progress.Circle
         size={44}

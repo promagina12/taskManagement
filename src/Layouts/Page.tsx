@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { colors } from "../styles/colors";
 import BaseHeader from "../components/BaseHeader";
 import NavigationHeader from "../components/NavigationHeader";
+import { responsiveHeight } from "react-native-responsive-dimensions";
 
 interface Props {
   scrollEnabled?: boolean;
@@ -62,7 +63,9 @@ const Page: React.FC<Props> = ({
           ? {
               contentContainerStyle: {
                 flexGrow: 1,
+                paddingBottom: responsiveHeight(20),
               },
+              showsVerticalScrollIndicator: false,
             }
           : {
               style: {

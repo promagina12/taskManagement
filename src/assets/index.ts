@@ -11,6 +11,7 @@ import linerShadow from "./images/linearShadow.png";
 import teamCardBG from "./images/teamCardBG.png";
 import avatar from "./images/avatar.jpg";
 import spacer from "./images/spacer.png";
+import personCircleOutline from "./images/personCircleOutline.png";
 
 export const placeholder = {
   onboarding1,
@@ -26,4 +27,5 @@ export const placeholder = {
   teamCardBG,
   avatar,
   spacer,
+  personCircleOutline,
 };

@@ -12,6 +12,7 @@ import ClockSquareSVG from "../../assets/AppIcon/clockSquare";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
 import { useUserData } from "../../providers/UserDataProvider";
+import ProfileSVG from "../../assets/AppIcon/profile";
 
 const BUTTONS = [
   {
@@ -33,24 +34,26 @@ const BUTTONS = [
 ];
 
 const Profile = () => {
-  const { currentUserData, currentUID } = useUserData();
-
-  console.log("currentUserData: ", currentUserData);
-  console.log("currentUID: ", currentUID);
-
+  const { currentUserData } = useUserData();
 
   return (
     <Page headerType="NAVIGATION" title="Profile" scrollEnabled>
       <View style={{ flex: 1, paddingTop: 20, gap: 37 }}>
         <View style={{ gap: 28 }}>
           <View style={{ gap: 20, ...Style.containerCenter }}>
-            <Image
-              source={placeholder.avatar}
-              style={{ width: 100, height: 100, borderRadius: 100 }}
-            />
+            {currentUserData?.image ? (
+              <Image
+                source={{ uri: currentUserData?.image }}
+                style={{ width: 100, height: 100, borderRadius: 100 }}
+              />
+            ) : (
+              <View style={styles.emptyProfile}>
+                <ProfileSVG size={100} color={colors.darkBlue} />
+              </View>
+            )}
             <View style={Style.containerCenter}>
-              <Text style={styles.name}>John Doe</Text>
-              <Text style={styles.email}>johndoe@example.com</Text>
+              <Text style={styles.name}>{currentUserData?.name}</Text>
+              <Text style={styles.email}>@{currentUserData?.username}</Text>
               <Pressable
                 style={styles.editButton}
                 onPress={() => navigate(ROUTES.EditProfile)}
@@ -112,5 +115,13 @@ const styles = StyleSheet.create({
     borderColor: colors.purple,
     borderRadius: 8,
     marginTop: 10,
+  },
+  emptyProfile: {
+    width: 100,
+    height: 100,
+    borderWidth: 2,
+    borderRadius: 100,
+    ...Style.containerCenter,
+    borderColor: colors.darkBlue,
   },
 });

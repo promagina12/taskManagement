@@ -2,17 +2,19 @@ import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import React from "react";
 import Page from "../../Layouts/Page";
 import Style from "../../styles/Style";
-import { placeholder } from "../../assets";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
 import ManageCard from "./components/ManageCard";
-import { goBack, reset } from "../../navigation/NavigationService";
+import { reset } from "../../navigation/NavigationService";
 import Button from "../../components/Button";
 import { useUserData } from "../../providers/UserDataProvider";
 import { ROUTES } from "../../navigation/Routes";
+import ProfileSVG from "../../assets/AppIcon/profile";
+import { useTaskData } from "../../providers/TaskDataProvider";
 
 const ManageProfile = () => {
-  const { onSignOut } = useUserData();
+  const { onSignOut, currentUserData } = useUserData();
+  const { tasks } = useTaskData();
 
   const onLogOut = async () => {
     await onSignOut();
@@ -32,30 +34,39 @@ const ManageProfile = () => {
       )}
     >
       <View style={{ flex: 1, paddingTop: 20, gap: 30 }}>
-        <View style={{ gap: 68 }}>
+        <View style={{ gap: 30 }}>
           <View style={{ gap: 20, ...Style.containerCenter }}>
-            <Image
-              source={placeholder.avatar}
-              style={{ width: 100, height: 100, borderRadius: 100 }}
-            />
+            {currentUserData?.image ? (
+              <Image
+                source={{ uri: currentUserData?.image }}
+                style={{ width: 100, height: 100, borderRadius: 100 }}
+              />
+            ) : (
+              <View style={styles.emptyProfile}>
+                <ProfileSVG size={100} color={colors.darkBlue} />
+              </View>
+            )}
             <View style={Style.containerCenter}>
-              <Text style={styles.name}>John Doe</Text>
-              <Text style={styles.email}>johndoe@example.com</Text>
+              <Text style={styles.name}>{currentUserData?.name}</Text>
+              <Text style={styles.email}>@{currentUserData?.username}</Text>
               <Pressable style={styles.buttonContainer}>
                 <Text style={styles.buttonText}>View Profile</Text>
               </Pressable>
             </View>
           </View>
-          <View style={styles.uiDesignContainer}>
-            <Text style={styles.uiDesign}>Ui Design</Text>
-            <Pressable
-              style={{
-                ...styles.buttonContainer,
-                marginTop: 0,
-              }}
-            >
-              <Text style={styles.buttonText}>Invite</Text>
-            </Pressable>
+          <View style={{ gap: 15 }}>
+            <Text style={styles.manage}>Workspace</Text>
+            <View style={styles.uiDesignContainer}>
+              <Text style={styles.uiDesign}>Ui Design</Text>
+              <Pressable
+                style={{
+                  ...styles.buttonContainer,
+                  marginTop: 0,
+                }}
+              >
+                <Text style={styles.buttonText}>Invite</Text>
+              </Pressable>
+            </View>
           </View>
         </View>
         <View style={{ gap: 15 }}>
@@ -76,7 +87,7 @@ const ManageProfile = () => {
                 gap: 23,
               }}
             >
-              <ManageCard label="Task" value={8} />
+              <ManageCard label="Task" value={tasks.length} />
               <ManageCard label="Member" value={13} />
             </View>
           </View>
@@ -130,5 +141,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.darkBlue,
     fontFamily: FONT_FAMILY.poppinsSemiBold,
+  },
+  emptyProfile: {
+    width: 100,
+    height: 100,
+    borderWidth: 2,
+    borderRadius: 100,
+    ...Style.containerCenter,
+    borderColor: colors.darkBlue,
   },
 });

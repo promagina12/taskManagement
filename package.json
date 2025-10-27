@@ -51,6 +51,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.20",
     "@types/react": "~19.1.0",
     "typescript": "~5.9.2"
   },

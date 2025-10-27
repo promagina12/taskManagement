@@ -5,6 +5,7 @@ import {
   StyleProp,
   ViewStyle,
   Pressable,
+  TextInputProps,
 } from "react-native";
 import React, { useState } from "react";
 import { colors } from "../styles/colors";
@@ -23,6 +24,7 @@ interface Props {
   containerStyle?: StyleProp<ViewStyle>;
   dateValue?: Date;
   onDateChange?: (event: DateTimePickerEvent, date?: Date) => void;
+  textInputProps?: TextInputProps;
 }
 
 const Input: React.FC<Props> = ({
@@ -34,6 +36,7 @@ const Input: React.FC<Props> = ({
   label,
   containerStyle,
   onDateChange,
+  textInputProps,
 }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
@@ -84,6 +87,7 @@ const Input: React.FC<Props> = ({
                 }
               : {})}
             editable={type !== "date" && type !== "time"}
+            {...textInputProps}
           />
         </Container>
       </View>

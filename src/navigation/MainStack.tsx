@@ -13,8 +13,9 @@ import Settings from "../screens/Settings/Settings";
 import EditProfile from "../screens/Profile/EditProfile";
 import Langauge from "../screens/Settings/Langauge";
 import Calendar from "../screens/Calendar/Calendar";
+import { RootStackParamList } from "../interface/stack";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const MainStack = () => {
   return (

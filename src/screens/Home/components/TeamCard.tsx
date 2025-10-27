@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import React from "react";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import { placeholder } from "../../../assets";
@@ -9,16 +9,19 @@ import Style from "../../../styles/Style";
 
 interface Props {
   selected: boolean;
+  name?: string;
+  onPress?: () => void;
 }
 
-const TeamCard: React.FC<Props> = ({ selected }) => {
+const TeamCard: React.FC<Props> = ({ selected, name, onPress }) => {
   return (
-    <View
+    <Pressable
       style={{
         ...styles.container,
         backgroundColor: selected ? colors.purple : colors.white,
         borderColor: selected ? colors.purple : "#EDF4FF",
       }}
+      onPress={onPress}
     >
       <Image source={placeholder.teamCardBG} style={styles.bgImg} />
       <View style={{ gap: 4 }}>
@@ -28,7 +31,7 @@ const TeamCard: React.FC<Props> = ({ selected }) => {
             color: selected ? colors.white : colors.darkBlue,
           }}
         >
-          Application Design
+          {name}
         </Text>
         <Text
           style={{
@@ -76,7 +79,7 @@ const TeamCard: React.FC<Props> = ({ selected }) => {
           <ProgressBar selected={selected} />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
@@ -89,7 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderWidth: 1,
     paddingHorizontal: 20,
-    paddingVertical: 26,
+    paddingVertical: 16,
     justifyContent: "space-between",
   },
   bgImg: {
