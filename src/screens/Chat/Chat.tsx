@@ -1,5 +1,5 @@
 import { View, Pressable, StyleSheet, FlatList } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Page from "../../Layouts/Page";
 import AddSVG from "../../assets/AppIcon/add";
 import { colors } from "../../styles/colors";
@@ -7,8 +7,19 @@ import Style from "../../styles/Style";
 import SearchBar from "../../components/SearchBar";
 import ChatCard from "./Components/ChatCard";
 import { responsiveHeight } from "react-native-responsive-dimensions";
+import { useChatData } from "../../providers/ChatDataProvider";
+import { IChat } from "../../interface/chat";
+import { navigate } from "../../navigation/NavigationService";
+import { ROUTES } from "../../navigation/Routes";
 
 const Chat = () => {
+  const { getAllChats } = useChatData();
+  const [chats, setChats] = useState<IChat[]>([]);
+
+  useEffect(() => {
+    getAllChats((user) => setChats(user));
+  }, []);
+
   return (
     <Page
       headerType="NAVIGATION"
@@ -20,8 +31,19 @@ const Chat = () => {
       )}
     >
       <FlatList
-        data={Array.from({ length: 10 })}
-        renderItem={() => <ChatCard />}
+        data={chats}
+        renderItem={({ item }) => (
+          <ChatCard
+            name={item.otherUser?.name}
+            image={item.otherUser?.image}
+            onPress={() =>
+              navigate(ROUTES.Messages, {
+                chatId: item.id,
+                otherUser: item.otherUser,
+              })
+            }
+          />
+        )}
         contentContainerStyle={{
           gap: 16,
           paddingBottom: responsiveHeight(20),

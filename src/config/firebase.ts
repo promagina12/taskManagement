@@ -4,3 +4,4 @@ export const usersRef = firestore().collection("users");
 export const tasksRef = firestore().collection("tasks");
 export const boardsRef = firestore().collection("boards");
 export const teamsRef = firestore().collection("teams");
+export const chatsRef = firestore().collection("chats");

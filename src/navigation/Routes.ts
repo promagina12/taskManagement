@@ -23,4 +23,6 @@ export const ROUTES = {
 
   Settings: "Settings",
   Langauge: "Langauge",
+
+  Messages: "Messages",
 };

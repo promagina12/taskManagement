@@ -6,22 +6,35 @@ import Style from "../../styles/Style";
 import { colors } from "../../styles/colors";
 import ProjectsCard from "../Projects/components/ProjectsCard";
 import { useTaskData } from "../../providers/TaskDataProvider";
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
+import { ITask } from "../../interface/task";
 
 const Search = () => {
   const { searchTaskbyName } = useTaskData();
   const [searchText, setSearchText] = useState<string>("");
   const [selectedFilter, setSelectedFilter] = useState<string>("Task");
+  const [searchResult, setSearchResult] = useState<ITask[]>([]);
 
-  const onFetchSearch = async () => {
-    if (searchText.length > 0) {
-      const response = await searchTaskbyName(searchText);
+  const onSearching = useCallback(async (value: string) => {
+    setSearchText(value);
+    onFetchSearch(value);
+  }, []);
+
+  const onFetchSearch = async (value: string) => {
+    console.log("value: ", value);
+    console.log("searchText: ", searchText);
+
+    if (value.length > 0) {
+      const response = await searchTaskbyName(value);
       console.log("response: ", response);
+      setSearchResult(response!);
+    } else {
+      setSearchResult([]);
     }
   };
 
   const debounceSearchResults = useCallback(() => {
-    debounce(onFetchSearch, 500);
+    debounce(onFetchSearch, 600);
   }, []);
 
   useEffect(() => {
@@ -33,10 +46,10 @@ const Search = () => {
       <View style={{ flex: 1, paddingTop: 30, gap: 30 }}>
         <SearchBar
           value={searchText}
-          onChangeText={setSearchText}
+          onChangeText={onSearching}
           placeholder="Search"
         />
-        {searchText.length > 0 && (
+        {searchResult && (
           <>
             <View style={{ ...Style.containerRow, gap: 20 }}>
               {["Task", "File"].map((item, index) => (
@@ -53,7 +66,10 @@ const Search = () => {
                 </Pressable>
               ))}
             </View>
-            <ProjectsCard />
+            {searchResult.length > 0 &&
+              searchResult.map((item, index) => (
+                <ProjectsCard title={item.name} key={index} />
+              ))}
           </>
         )}
       </View>

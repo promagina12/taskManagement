@@ -9,9 +9,9 @@ const ThreeDotsHorizontalSVG = (props) => (
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <Circle cx={2} cy={2} r={2} fill="#848A94" />
-    <Circle cx={8} cy={2} r={2} fill="#848A94" />
-    <Circle cx={14} cy={2} r={2} fill="#848A94" />
+    <Circle cx={2} cy={2} r={2} fill={props.color ?? "#848A94"} />
+    <Circle cx={8} cy={2} r={2} fill={props.color ?? "#848A94"} />
+    <Circle cx={14} cy={2} r={2} fill={props.color ?? "#848A94"} />
   </Svg>
 );
 export default ThreeDotsHorizontalSVG;

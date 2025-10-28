@@ -34,6 +34,7 @@ const TaskDataProvider: React.FC<Props> = ({ children }) => {
     try {
       const newTaskRef = await tasksRef.add({
         ...data,
+        nameLowercase: data.name.toLowerCase(),
         user_id: currentUID,
         date,
         start_time,
@@ -98,9 +99,9 @@ const TaskDataProvider: React.FC<Props> = ({ children }) => {
     try {
       const querySnapshot = await tasksRef
         .where("user_id", "==", currentUID)
-        .orderBy("name")
-        .startAt(searchText)
-        .endAt(searchText + "\uf8ff")
+        .where("nameLowercase", ">=", searchText.toLowerCase())
+        .where("nameLowercase", "<=", searchText.toLowerCase() + "\uf8ff")
+        .orderBy("nameLowercase")
         .get();
 
       const searchedTasks: ITask[] = querySnapshot.docs.map((doc) => ({

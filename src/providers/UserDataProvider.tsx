@@ -14,6 +14,7 @@ export interface IUserDataContext {
   setCurrentUserData: (data: IUser | null) => void;
   onSignOut: () => Promise<void>;
   updateUserbyId: (data: IUser, id: string) => Promise<void>;
+  getUserbyId: (id: string, callback: (user: IUser) => void) => Promise<void>;
 }
 
 interface Props {
@@ -140,6 +141,7 @@ export default ({ children }: Props) => {
         setCurrentUserData,
         onSignOut,
         updateUserbyId,
+        getUserbyId,
       }}
     >
       {children}

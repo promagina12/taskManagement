@@ -16,6 +16,7 @@ import UserDataProvider from "./src/providers/UserDataProvider";
 import TaskDataProvider from "./src/providers/TaskDataProvider";
 import Toast from "react-native-toast-message";
 import TeamDataProvider from "./src/providers/TeamDataProvider";
+import SharedProviders from "./src/providers/SharedProviders";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -33,17 +34,11 @@ export default function App() {
     <>
       <StatusBar />
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SafeAreaProvider>
-          <UserDataProvider>
-            <TaskDataProvider>
-              <TeamDataProvider>
-                <NavigationContainer ref={navigationRef}>
-                  <MainStack />
-                </NavigationContainer>
-              </TeamDataProvider>
-            </TaskDataProvider>
-          </UserDataProvider>
-        </SafeAreaProvider>
+        <SharedProviders>
+          <NavigationContainer ref={navigationRef}>
+            <MainStack />
+          </NavigationContainer>
+        </SharedProviders>
       </GestureHandlerRootView>
       <Toast />
     </>

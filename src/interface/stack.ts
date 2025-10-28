@@ -1,5 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { ITask } from "./task";
+import { IUser } from "./users";
 
 export type RootStackParamList = {
   Onboarding: undefined;
@@ -14,6 +15,7 @@ export type RootStackParamList = {
   EditProfile: undefined;
   Langauge: undefined;
   Calendar: undefined;
+  Messages: { chatId: string; otherUser: IUser };
 };
 
 export type RootStackProps = NativeStackScreenProps<RootStackParamList>;
