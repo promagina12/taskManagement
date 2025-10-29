@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
 import { ITask, TaskFormData } from "../interface/task";
-import { tasksRef } from "../config/firebase";
+import { tasksRef, usersRef } from "../config/firebase";
 import { useUserData } from "./UserDataProvider";
 import firestore from "@react-native-firebase/firestore";
+import { IUser } from "../interface/users";
 
 export interface ITaskDataProvider {
   createTask: (data: TaskFormData) => Promise<any>;
@@ -23,7 +24,7 @@ export const TaskDataContext = createContext<ITaskDataProvider | undefined>(
 );
 
 const TaskDataProvider: React.FC<Props> = ({ children }) => {
-  const { currentUID } = useUserData();
+  const { currentUID, setMembers } = useUserData();
   const [tasks, setTasks] = useState<ITask[]>([]);
 
   const createTask = async (data: TaskFormData) => {
@@ -39,12 +40,16 @@ const TaskDataProvider: React.FC<Props> = ({ children }) => {
         date,
         start_time,
         end_time,
+        status: "todo",
         date_created: firestore.FieldValue.serverTimestamp(),
         date_updated: firestore.FieldValue.serverTimestamp(),
       });
 
+      setMembers([]);
+
       return newTaskRef;
     } catch (error) {
+      setMembers([]);
       console.log("ERROR: ", error);
     }
   };
@@ -52,21 +57,57 @@ const TaskDataProvider: React.FC<Props> = ({ children }) => {
   const getUserTasks = async (callback: (tasks: ITask[]) => void) => {
     tasksRef
       .where("user_id", "==", currentUID)
-      .onSnapshot((documentSnapshot) => {
+      .onSnapshot(async (documentSnapshot) => {
         let tasks: ITask[] = [];
 
-        tasks = documentSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const members = documentSnapshot.docs.map(async (doc) => {
+          const members = doc.data()?.members;
+
+          if (members && members.length > 0) {
+            const membersData = await Promise.all(
+              members.map(async (memberId: string) => {
+                const userDoc = await usersRef.doc(memberId).get();
+                return { id: userDoc.id, ...userDoc.data() };
+              })
+            );
+
+            return {
+              id: doc.id,
+              ...doc.data(),
+              membersInfo: membersData,
+            };
+          }
+
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        });
+
+        tasks = await Promise.all(members);
 
         callback(tasks);
       });
   };
 
   const getTaskbyId = async (id: string, callback: (task: ITask) => void) => {
-    tasksRef.doc(id).onSnapshot((documentSnapshot) => {
+    tasksRef.doc(id).onSnapshot(async (documentSnapshot) => {
       let task: ITask | null = null;
+
+      const members = documentSnapshot.data()?.members;
+
+      if (members && members.length > 0) {
+        const membersData = await Promise.all(
+          members.map(async (memberId: string) => {
+            const userDoc = await usersRef.doc(memberId).get();
+            return { id: userDoc.id, ...userDoc.data() };
+          })
+        );
+
+        setMembers(membersData as IUser[]);
+      } else {
+        setMembers([]);
+      }
 
       task = {
         id: documentSnapshot.id,
@@ -78,19 +119,17 @@ const TaskDataProvider: React.FC<Props> = ({ children }) => {
   };
 
   const updateTaskbyId = async (data: TaskFormData, id: string) => {
-    const { date, end_time, name, start_time } = data;
-
     try {
       const response = await tasksRef.doc(id).update({
-        date,
-        end_time,
-        name,
-        start_time,
+        ...data,
         date_updated: firestore.FieldValue.serverTimestamp(),
       });
 
+      setMembers([]);
+
       return response;
     } catch (error) {
+      setMembers([]);
       console.log("ERROR: ", error);
     }
   };

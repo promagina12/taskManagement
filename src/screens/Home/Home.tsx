@@ -20,6 +20,8 @@ import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
 import { useTaskData } from "../../providers/TaskDataProvider";
 import { ITask } from "../../interface/task";
+import { isEmpty } from "lodash";
+import { useTeamData } from "../../providers/TeamDataProvider";
 
 const Home = () => {
   const flatlistRef = useRef<FlatList>(null);
@@ -28,6 +30,7 @@ const Home = () => {
     itemVisiblePercentThreshold: 50,
   }).current;
   const { getUserTasks, tasks, setTasks } = useTaskData();
+  const { getUserTeams, setTeams } = useTeamData();
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
   const [newTask, setNewTask] = useState<ITask[]>([]);
@@ -47,7 +50,10 @@ const Home = () => {
   useEffect(() => {
     getUserTasks((tasks) => {
       setTasks(tasks);
-      setNewTask([...tasks, { id: "Empty" }])
+      setNewTask([...tasks, { id: "Empty" }]);
+    });
+    getUserTeams((teams) => {
+      setTeams(teams);
     });
   }, []);
 
@@ -75,6 +81,7 @@ const Home = () => {
                 <TeamCard
                   selected={selectedIndex === index}
                   name={item.name}
+                  membersInfo={item.membersInfo}
                   onPress={() => {
                     if (selectedIndex === index) {
                       navigate(ROUTES.AddTask, {
@@ -101,23 +108,25 @@ const Home = () => {
             onViewableItemsChanged={onViewableItemsChanged}
           />
         </View>
-        <View style={{ gap: 20 }}>
-          <View style={Style.containerSpaceBetween}>
-            <Text style={styles.inProgressTitle}>In Progress</Text>
-            <Pressable onPress={() => navigate(ROUTES.TaskStatus)}>
-              <ChevronRightSVG />
-            </Pressable>
+        {!isEmpty(tasks) && (
+          <View style={{ gap: 20 }}>
+            <View style={Style.containerSpaceBetween}>
+              <Text style={styles.inProgressTitle}>In Progress</Text>
+              <Pressable onPress={() => navigate(ROUTES.TaskStatus)}>
+                <ChevronRightSVG />
+              </Pressable>
+            </View>
+            <View style={{ gap: 16 }}>
+              {tasks.map((item, index) => (
+                <ProgressCard
+                  key={index}
+                  title={item.name}
+                  time={moment(item.start_time).fromNow()}
+                />
+              ))}
+            </View>
           </View>
-          <View style={{ gap: 16 }}>
-            {tasks.map((item, index) => (
-              <ProgressCard
-                key={index}
-                title={item.name}
-                time={moment(item.start_time).fromNow()}
-              />
-            ))}
-          </View>
-        </View>
+        )}
       </View>
     </Page>
   );

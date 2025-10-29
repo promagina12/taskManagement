@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Page from "../../Layouts/Page";
 import AddSVG from "../../assets/AppIcon/add";
 import { colors } from "../../styles/colors";
@@ -17,13 +17,22 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { taskSchema } from "../../utils/schema";
 import { useTeamData } from "../../providers/TeamDataProvider";
 import Toast from "react-native-toast-message";
+import { useUserData } from "../../providers/UserDataProvider";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "../../interface/stack";
 
 const TYPE = ["Private", "Public", "Secret"];
 
+type Props = RouteProp<RootStackParamList, "CreateTeam">;
+
 const CreateTeam = () => {
+  const params = useRoute<Props>()?.params;
+  const { actions, itemId } = params || {};
+
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [img, setImg] = useState<string | null>(null);
-  const { createTeam } = useTeamData();
+  const { createTeam, getTeamById } = useTeamData();
+  const { members, setMembers } = useUserData();
 
   const {
     control,
@@ -36,6 +45,21 @@ const CreateTeam = () => {
     },
     resolver: yupResolver(taskSchema),
   });
+
+  useEffect(() => {
+    if (actions === "edit") {
+      getTeamById(itemId, (team) => {
+        setValue("name", team?.name!);
+        setImg(team?.image!);
+        setSelectedType(team?.type!);
+      });
+    } else {
+      setValue("name", "");
+      setImg(null);
+      setSelectedType(null);
+      setMembers([]);
+    }
+  }, [actions, itemId]);
 
   const onSelectedLogo = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -55,6 +79,7 @@ const CreateTeam = () => {
       ...data,
       image: img,
       type: selectedType,
+      members: members.map((item) => item.id),
     };
 
     try {

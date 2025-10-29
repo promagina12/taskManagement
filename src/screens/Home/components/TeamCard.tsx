@@ -6,14 +6,22 @@ import { colors } from "../../../styles/colors";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import ProgressBar from "../../../components/ProgressBar";
 import Style from "../../../styles/Style";
+import { IUser } from "../../../interface/users";
+import ProfileSVG from "../../../assets/AppIcon/profile";
 
 interface Props {
   selected: boolean;
   name?: string;
   onPress?: () => void;
+  membersInfo?: IUser[];
 }
 
-const TeamCard: React.FC<Props> = ({ selected, name, onPress }) => {
+const TeamCard: React.FC<Props> = ({
+  selected,
+  name,
+  onPress,
+  membersInfo,
+}) => {
   return (
     <Pressable
       style={{
@@ -44,16 +52,31 @@ const TeamCard: React.FC<Props> = ({ selected, name, onPress }) => {
       </View>
       <View style={{ ...Style.containerSpaceBetween }}>
         <View style={{ width: 82, height: 32 }}>
-          {Array.from({ length: 3 }).map((_, index) => {
-            return (
+          {membersInfo?.map((item, index) => {
+            return item.image ? (
               <Image
                 key={index}
-                source={placeholder.avatar}
+                source={{ uri: item.image }}
                 style={{
                   ...styles.img,
                   left: index * 20,
                 }}
               />
+            ) : (
+              <View
+                style={{
+                  ...styles.img,
+                  left: index * 20,
+                  borderColor: colors.white,
+                  backgroundColor: selected ? colors.purple : colors.white,
+                  ...Style.containerCenter,
+                }}
+              >
+                <ProfileSVG
+                  size={25}
+                  color={selected ? colors.white : colors.darkBlue}
+                />
+              </View>
             );
           })}
         </View>

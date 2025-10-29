@@ -8,15 +8,12 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "./src/navigation/NavigationService";
 import MainStack from "./src/navigation/MainStack";
-import UserDataProvider from "./src/providers/UserDataProvider";
-import TaskDataProvider from "./src/providers/TaskDataProvider";
 import Toast from "react-native-toast-message";
-import TeamDataProvider from "./src/providers/TeamDataProvider";
 import SharedProviders from "./src/providers/SharedProviders";
+import "./src/utils/sheets";
 
 export default function App() {
   const [loaded] = useFonts({

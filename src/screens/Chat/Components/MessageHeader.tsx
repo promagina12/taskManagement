@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image } from "react-native";
+import { View, Text, Pressable, Image, StyleSheet } from "react-native";
 import React, { FC } from "react";
 import Style from "../../../styles/Style";
 import ArrowLeftSVG from "../../../assets/AppIcon/arrowLeft";
@@ -6,6 +6,7 @@ import { goBack } from "../../../navigation/NavigationService";
 import ThreeDotsHorizontalSVG from "../../../assets/AppIcon/threeDotsHorizontal";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { colors } from "../../../styles/colors";
+import ProfileSVG from "../../../assets/AppIcon/profile";
 
 interface Props {
   name?: string;
@@ -33,11 +34,15 @@ const MessageHeader: FC<Props> = ({ image, name }) => {
           <ArrowLeftSVG color={colors.darkBlue} />
         </Pressable>
         <View style={{ ...Style.containerRow, gap: 10 }}>
-          {image && (
+          {image ? (
             <Image
               source={{ uri: image }}
               style={{ width: 42, height: 42, borderRadius: 100 }}
             />
+          ) : (
+            <View style={styles.emptyProfile}>
+              <ProfileSVG size={35} color={colors.darkBlue} />
+            </View>
           )}
           <Text
             style={{
@@ -59,3 +64,14 @@ const MessageHeader: FC<Props> = ({ image, name }) => {
 };
 
 export default MessageHeader;
+
+const styles = StyleSheet.create({
+  emptyProfile: {
+    width: 42,
+    height: 42,
+    borderWidth: 2,
+    borderRadius: 100,
+    ...Style.containerCenter,
+    borderColor: colors.darkBlue,
+  },
+});

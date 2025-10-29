@@ -15,6 +15,7 @@ import Langauge from "../screens/Settings/Langauge";
 import Calendar from "../screens/Calendar/Calendar";
 import { RootStackParamList } from "../interface/stack";
 import Messages from "../screens/Chat/Messages";
+import CreateChat from "../screens/Chat/CreateChat";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -41,6 +42,7 @@ const MainStack = () => {
       <Stack.Screen name={ROUTES.Langauge} component={Langauge} />
       <Stack.Screen name={ROUTES.Calendar} component={Calendar} />
       <Stack.Screen name={ROUTES.Messages} component={Messages} />
+      <Stack.Screen name={ROUTES.CreateChat} component={CreateChat} />
     </Stack.Navigator>
   );
 };

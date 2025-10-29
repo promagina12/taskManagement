@@ -25,4 +25,5 @@ export const ROUTES = {
   Langauge: "Langauge",
 
   Messages: "Messages",
+  CreateChat: "CreateChat",
 };

@@ -25,7 +25,10 @@ const Chat = () => {
       headerType="NAVIGATION"
       title="Chat"
       rightComponent={() => (
-        <Pressable style={styles.addContainer}>
+        <Pressable
+          style={styles.addContainer}
+          onPress={() => navigate(ROUTES.CreateChat)}
+        >
           <AddSVG color={colors.darkBlue} size={20} />
         </Pressable>
       )}

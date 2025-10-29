@@ -5,6 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import UserDataProvider from "./UserDataProvider";
 import TeamDataProvider from "./TeamDataProvider";
 import ChatDataProvider from "./ChatDataProvider";
+import { SheetProvider } from "react-native-actions-sheet";
 
 type ProviderProps = Record<string, unknown>;
 
@@ -21,6 +22,7 @@ const SharedProviders: React.FC<Props> = ({ children }) => {
     [TaskDataProvider, {}],
     [TeamDataProvider, {}],
     [ChatDataProvider, {}],
+    [SheetProvider, {}],
   ];
 
   const Combined = providers.reduceRight(

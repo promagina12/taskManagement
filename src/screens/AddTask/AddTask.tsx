@@ -17,14 +17,16 @@ import Toast from "react-native-toast-message";
 import { addTaskSchema } from "../../utils/schema";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../../interface/stack";
+import { useUserData } from "../../providers/UserDataProvider";
 
 type Props = RouteProp<RootStackParamList, "AddTask">;
 
 const AddTask = () => {
   const params = useRoute<Props>()?.params;
-  const { actions, data, itemId } = params || {};
+  const { actions, itemId } = params || {};
 
   const { createTask, updateTaskbyId, getTaskbyId } = useTaskData();
+  const { members, setMembers } = useUserData();
 
   const {
     control,
@@ -43,6 +45,8 @@ const AddTask = () => {
 
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
 
+  const endTime = new Date().setHours(new Date().getHours() + 2);
+
   useEffect(() => {
     if (actions === "edit") {
       getTaskbyId(itemId, (task) => {
@@ -54,13 +58,19 @@ const AddTask = () => {
     } else {
       setValue("date", new Date());
       setValue("start_time", new Date());
-      setValue("end_time", new Date());
+      setValue("end_time", new Date(endTime));
+      setMembers([]);
     }
-  }, [actions, data, itemId]);
+  }, [actions, itemId]);
 
   const onCreateTask = async (data: TaskFormData) => {
+    const newData = {
+      ...data,
+      members: members.map((item) => item.id),
+    };
+
     try {
-      await createTask(data);
+      await createTask(newData);
 
       Toast.show({
         type: "success",
@@ -75,8 +85,13 @@ const AddTask = () => {
   };
 
   const onUpdateTask = async (data: TaskFormData) => {
+    const newData = {
+      ...data,
+      members: members.map((item) => item.id),
+    };
+
     try {
-      await updateTaskbyId(data, itemId);
+      await updateTaskbyId(newData, itemId);
 
       Toast.show({
         type: "success",

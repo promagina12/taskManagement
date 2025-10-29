@@ -7,6 +7,7 @@ import firestore, {
 } from "@react-native-firebase/firestore";
 
 export interface IChatDataProvider {
+  createChat: (otherUserId: string) => Promise<any>;
   getAllChats: (callback: (chats: IChat[]) => void) => Promise<void>;
   getMessagesbyChatId: (
     chatId: string,
@@ -32,9 +33,40 @@ export const ChatDataContext = createContext<IChatDataProvider | undefined>(
 const ChatDataProvider: React.FC<Props> = ({ children }) => {
   const { currentUID, currentUserData } = useUserData();
 
+  const createChat = async (otherUserId: string) => {
+    try {
+      let Chat: IChat | null = null;
+      let ChatId: string | null = null;
+
+      const querySnapshot = await chatsRef
+        .where("users", "in", [
+          [currentUID, otherUserId],
+          [otherUserId, currentUID],
+        ])
+        .get();
+
+      if (!querySnapshot.empty) {
+        ChatId = querySnapshot.docs[0].id;
+      } else {
+        const newChat = await chatsRef.add({
+          users: [currentUID, otherUserId],
+          date_created: firestore.FieldValue.serverTimestamp(),
+          date_updated: firestore.FieldValue.serverTimestamp(),
+        });
+
+        ChatId = newChat.id;
+      }
+
+      return ChatId;
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
   const getAllChats = async (callback: (chats: IChat[]) => void) => {
     chatsRef
       .where("users", "array-contains", currentUID)
+      .orderBy("date_updated", "desc")
       .onSnapshot(async (documentSnapshot) => {
         let chat: IChat[] = [];
 
@@ -45,7 +77,6 @@ const ChatDataProvider: React.FC<Props> = ({ children }) => {
 
           const user = await usersRef.doc(otherUserId).get();
 
-          console.log("otherUser: ", user);
           return {
             id: doc.id,
             ...doc.data(),
@@ -92,10 +123,16 @@ const ChatDataProvider: React.FC<Props> = ({ children }) => {
           senderData: {
             id: currentUID,
             name: currentUserData?.name,
-            image: currentUserData?.image,
+            image: currentUserData?.image || "",
           },
           time: firestore.FieldValue.serverTimestamp(),
         });
+
+      if (newMessage) {
+        chatsRef.doc(chatId).update({
+          date_updated: firestore.FieldValue.serverTimestamp(),
+        });
+      }
 
       return newMessage;
     } catch (error) {
@@ -105,7 +142,7 @@ const ChatDataProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <ChatDataContext.Provider
-      value={{ getAllChats, getMessagesbyChatId, sendMessage }}
+      value={{ createChat, getAllChats, getMessagesbyChatId, sendMessage }}
     >
       {children}
     </ChatDataContext.Provider>

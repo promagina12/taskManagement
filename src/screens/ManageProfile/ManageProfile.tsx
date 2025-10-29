@@ -11,10 +11,13 @@ import { useUserData } from "../../providers/UserDataProvider";
 import { ROUTES } from "../../navigation/Routes";
 import ProfileSVG from "../../assets/AppIcon/profile";
 import { useTaskData } from "../../providers/TaskDataProvider";
+import { useTeamData } from "../../providers/TeamDataProvider";
+import { filter } from "lodash";
 
 const ManageProfile = () => {
-  const { onSignOut, currentUserData } = useUserData();
+  const { onSignOut, currentUserData, users, currentUID } = useUserData();
   const { tasks } = useTaskData();
+  const { teams } = useTeamData();
 
   const onLogOut = async () => {
     await onSignOut();
@@ -23,6 +26,8 @@ const ManageProfile = () => {
       routes: [{ name: ROUTES.Login }],
     });
   };
+
+  const newData = filter(users, (user) => user.id !== currentUID);
 
   return (
     <Page
@@ -78,7 +83,7 @@ const ManageProfile = () => {
                 gap: 23,
               }}
             >
-              <ManageCard label="Team" value={8} />
+              <ManageCard label="Team" value={teams.length} />
               <ManageCard label="Labels" value={13} />
             </View>
             <View
@@ -88,7 +93,7 @@ const ManageProfile = () => {
               }}
             >
               <ManageCard label="Task" value={tasks.length} />
-              <ManageCard label="Member" value={13} />
+              <ManageCard label="Member" value={newData.length} />
             </View>
           </View>
         </View>

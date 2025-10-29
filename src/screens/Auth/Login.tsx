@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { useState } from "react";
 import Page from "../../Layouts/Page";
 import { colors } from "../../styles/colors";
@@ -13,8 +13,8 @@ import { ROUTES } from "../../navigation/Routes";
 import { signInWithEmail } from "../../utils/signInWithEmail";
 
 const Login = () => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("Test3@email.com");
+  const [password, setPassword] = useState<string>("password123");
 
   const onLogin = async () => {
     try {

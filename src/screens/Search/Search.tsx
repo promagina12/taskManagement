@@ -21,12 +21,8 @@ const Search = () => {
   }, []);
 
   const onFetchSearch = async (value: string) => {
-    console.log("value: ", value);
-    console.log("searchText: ", searchText);
-
     if (value.length > 0) {
       const response = await searchTaskbyName(value);
-      console.log("response: ", response);
       setSearchResult(response!);
     } else {
       setSearchResult([]);

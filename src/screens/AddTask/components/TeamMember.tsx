@@ -1,12 +1,33 @@
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { colors } from "../../../styles/colors";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { placeholder } from "../../../assets";
 import Style from "../../../styles/Style";
 import AddSVG from "../../../assets/AppIcon/add";
+import { SheetManager } from "react-native-actions-sheet";
+import { IUser } from "../../../interface/users";
+import { useUserData } from "../../../providers/UserDataProvider";
+import ProfileSVG from "../../../assets/AppIcon/profile";
 
 const TeamMember = () => {
+  const { members, setMembers } = useUserData();
+  const [member, setMember] = useState<IUser | null>(null);
+
+  useEffect(() => {
+    if (member) {
+      if (members.find((item) => item.id === member.id)) {
+        return;
+      }
+      setMembers((prevMembers) => [...prevMembers, member]);
+    }
+  }, [member]);
+
+  const onPressAdd = async () => {
+    const payload = await SheetManager.show("TeamMember");
+    setMember(payload);
+  };
+
   return (
     <View style={{ gap: 12 }}>
       <Text style={styles.name}>Team Member</Text>
@@ -16,7 +37,7 @@ const TeamMember = () => {
           gap: 10,
         }}
       >
-        {Array.from({ length: 3 }).map((_, index) => (
+        {members.map((item, index) => (
           <View
             key={index}
             style={{
@@ -24,8 +45,14 @@ const TeamMember = () => {
               ...Style.containerCenter,
             }}
           >
-            <Image source={placeholder.avatar} style={styles.avatar} />
-            <Text style={styles.name}>John</Text>
+            {item?.image ? (
+              <Image source={{ uri: item?.image }} style={styles.avatar} />
+            ) : (
+              <View style={styles.emptyProfile}>
+                <ProfileSVG size={35} color={colors.darkBlue} />
+              </View>
+            )}
+            <Text style={styles.name}>{item?.name}</Text>
           </View>
         ))}
         <View
@@ -33,7 +60,7 @@ const TeamMember = () => {
             gap: 6,
           }}
         >
-          <Pressable style={styles.addButton}>
+          <Pressable style={styles.addButton} onPress={onPressAdd}>
             <AddSVG size={24} color={colors.purple} />
           </Pressable>
           <Text
@@ -71,4 +98,12 @@ const styles = StyleSheet.create({
     ...Style.containerCenter,
     borderColor: colors.purple,
   },
+  emptyProfile: {
+      width: 40,
+      height: 40,
+      borderWidth: 1.5,
+      borderRadius: 100,
+      ...Style.containerCenter,
+      borderColor: colors.darkBlue,
+    },
 });

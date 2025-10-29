@@ -5,6 +5,7 @@ import { usersRef } from "../config/firebase";
 import { reset } from "../navigation/NavigationService";
 import firestore from "@react-native-firebase/firestore";
 import { ROUTES } from "../navigation/Routes";
+import { filter } from "lodash";
 
 export interface IUserDataContext {
   registerUser: (data: IUser) => Promise<void>;
@@ -15,6 +16,11 @@ export interface IUserDataContext {
   onSignOut: () => Promise<void>;
   updateUserbyId: (data: IUser, id: string) => Promise<void>;
   getUserbyId: (id: string, callback: (user: IUser) => void) => Promise<void>;
+  users: IUser[];
+  setUsers: (users: IUser[]) => void;
+  getAllUsers: (callback: (users: IUser[]) => void) => Promise<void>;
+  members: IUser[];
+  setMembers: React.Dispatch<React.SetStateAction<IUser[]>>;
 }
 
 interface Props {
@@ -29,22 +35,18 @@ export default ({ children }: Props) => {
   const [currentUID, setCurrentUID] = useState<string | null>(null);
   const [currentUserData, setCurrentUserData] = useState<IUser | null>(null);
   const [users, setUsers] = useState<IUser[]>([]);
+  const [members, setMembers] = useState<IUser[]>([]);
 
   const handleAuthStateChanged = (user: any) => {
-    console.log("user: ", user);
-
     if (user) {
       setCurrentUID(user.uid!);
+      getAllUsers((users) => setUsers(users));
       getUserbyId(user.uid!, (currUser) =>
         setCurrentUserData({
           ...currUser,
           id: user.uid,
         })
       );
-      setCurrentUserData({
-        ...user,
-        id: user.uid,
-      });
 
       reset({
         index: 0,
@@ -76,6 +78,7 @@ export default ({ children }: Props) => {
       );
       if (user) {
         await usersRef.doc(user.uid!).set({
+          id: user.uid,
           name,
           email,
           password,
@@ -121,6 +124,18 @@ export default ({ children }: Props) => {
     }
   };
 
+  const getAllUsers = async (callback: (users: IUser[]) => void) => {
+    usersRef.orderBy("name").onSnapshot((documentSnapshot) => {
+      let users: IUser[] = [];
+      users = documentSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      callback(users);
+    });
+  };
+
   const onSignOut = async () => {
     try {
       await auth().signOut();
@@ -142,6 +157,11 @@ export default ({ children }: Props) => {
         onSignOut,
         updateUserbyId,
         getUserbyId,
+        users,
+        setUsers,
+        getAllUsers,
+        members,
+        setMembers,
       }}
     >
       {children}

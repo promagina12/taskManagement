@@ -1,4 +1,5 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+import { IUser } from "./users";
 
 export interface ITask {
   name?: string;
@@ -9,8 +10,9 @@ export interface ITask {
   end_time?: FirebaseFirestoreTypes.Timestamp;
   user_id?: string;
   id?: string;
-  status?: "pending" | "completed" | "todo";
+  status?: "inProgress" | "completed" | "todo";
   members?: string[];
+  membersInfo?: IUser[];
 }
 
 export interface IBoard {

@@ -7,24 +7,36 @@ import FilterSVG from "../../assets/AppIcon/filter";
 import StatusChart from "./components/StatusChart";
 import { FONT_FAMILY } from "../../styles/fonts";
 import ThreeDotsHorizontalSVG from "../../assets/AppIcon/threeDotsHorizontal";
-
-const PIE_LABEL = [
-  {
-    label: "To Do",
-    color: "#B1D199",
-  },
-  {
-    label: "In Progress",
-    color: "#FFB35A",
-  },
-  {
-    label: "Completed",
-    color: "#756EF3",
-  },
-];
+import { useTaskData } from "../../providers/TaskDataProvider";
 
 const TaskStatus = () => {
   const [selected, setSelected] = useState<number | null>(null);
+  const { tasks } = useTaskData();
+
+  const todo = tasks.filter((task) => task.status === "todo");
+  const inProgress = tasks.filter((task) => task.status === "inProgress");
+  const completed = tasks.filter((task) => task.status === "completed");
+
+  const PIE_LABEL = [
+    {
+      label: "To Do",
+      color: "#B1D199",
+      value: todo.length,
+      subVal: 0,
+    },
+    {
+      label: "In Progress",
+      color: "#FFB35A",
+      value: inProgress.length,
+      subVal: 0,
+    },
+    {
+      label: "Completed",
+      color: "#756EF3",
+      value: completed.length,
+      subVal: 0,
+    },
+  ];
 
   return (
     <Page
@@ -62,7 +74,7 @@ const TaskStatus = () => {
                   <View style={{ flex: 1 }}>
                     <Text style={styles.label}>{item.label}</Text>
                     <Text style={styles.subText}>
-                      18 Task now • 18 {status}
+                      {item.value} Task now • {item.subVal} {status}
                     </Text>
                   </View>
                   <Pressable>

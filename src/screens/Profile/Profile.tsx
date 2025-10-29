@@ -48,7 +48,7 @@ const Profile = () => {
               />
             ) : (
               <View style={styles.emptyProfile}>
-                <ProfileSVG size={100} color={colors.darkBlue} />
+                <ProfileSVG size={90} color={colors.darkBlue} />
               </View>
             )}
             <View style={Style.containerCenter}>

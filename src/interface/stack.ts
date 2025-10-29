@@ -1,5 +1,4 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { ITask } from "./task";
 import { IUser } from "./users";
 
 export type RootStackParamList = {
@@ -7,8 +6,8 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   BottomStack: undefined;
-  AddTask: { actions: string; itemId: string; data: ITask };
-  CreateTeam: undefined;
+  AddTask: { actions: string; itemId: string };
+  CreateTeam: { actions: string; itemId: string };
   ManageProfile: undefined;
   Search: undefined;
   Settings: undefined;
