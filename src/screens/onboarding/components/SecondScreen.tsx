@@ -5,8 +5,11 @@ import { placeholder } from "../../../assets";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { colors } from "../../../styles/colors";
 import Style from "../../../styles/Style";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 const SecondScreen = () => {
+  const { theme } = useTheme();
+
   return (
     <View style={{ width: responsiveWidth(100) }}>
       <View
@@ -17,21 +20,42 @@ const SecondScreen = () => {
           style={{ width: "100%", height: "100%" }}
         />
         <View style={{ position: "absolute" }}>
-          <Image source={placeholder.onboarding2} resizeMode="contain" />
+          <Image source={theme.onBoarding2} resizeMode="contain" />
           <Image
-            source={placeholder.chatBox1}
+            source={theme.chatBox1}
             style={{ position: "absolute", top: 15 }}
           />
           <Image
-            source={placeholder.chatBox2}
+            source={theme.chatBox2}
             style={{ position: "absolute", right: 10, top: 90 }}
           />
         </View>
       </View>
       <View style={{ paddingHorizontal: 30 }}>
-        <Text style={styles.title}>Task Management</Text>
-        <Text style={styles.subTitle}>
-          Work more <Text style={styles.span}>Structured</Text> and Organized 👌
+        <Text
+          style={{
+            ...styles.title,
+            color: theme.primary,
+          }}
+        >
+          Task Management
+        </Text>
+        <Text
+          style={{
+            ...styles.subTitle,
+            color: theme.secondary,
+          }}
+        >
+          Work more{" "}
+          <Text
+            style={{
+              ...styles.span,
+              color: theme.primary,
+            }}
+          >
+            Structured
+          </Text>{" "}
+          and Organized 👌
         </Text>
       </View>
     </View>

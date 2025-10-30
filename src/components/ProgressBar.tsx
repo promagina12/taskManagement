@@ -1,6 +1,7 @@
 import { View } from "react-native";
 import React from "react";
 import { colors } from "../styles/colors";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   selected?: boolean;
@@ -22,8 +23,8 @@ const ProgressBar: React.FC<Props> = ({
       style={{
         width: "100%",
         height,
-        borderRadius: 100,
         backgroundColor: bgColor ?? "transparent",
+        borderRadius: 100,
       }}
     >
       <View

@@ -13,6 +13,7 @@ import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
 import { useUserData } from "../../providers/UserDataProvider";
 import ProfileSVG from "../../assets/AppIcon/profile";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const BUTTONS = [
   {
@@ -35,6 +36,7 @@ const BUTTONS = [
 
 const Profile = () => {
   const { currentUserData } = useUserData();
+  const { theme } = useTheme();
 
   return (
     <Page headerType="NAVIGATION" title="Profile" scrollEnabled>
@@ -47,30 +49,56 @@ const Profile = () => {
                 style={{ width: 100, height: 100, borderRadius: 100 }}
               />
             ) : (
-              <View style={styles.emptyProfile}>
-                <ProfileSVG size={90} color={colors.darkBlue} />
+              <View
+                style={{
+                  ...styles.emptyProfile,
+                  borderColor: theme.secondary,
+                }}
+              >
+                <ProfileSVG size={90} color={theme.secondary} />
               </View>
             )}
             <View style={Style.containerCenter}>
-              <Text style={styles.name}>{currentUserData?.name}</Text>
+              <Text
+                style={{
+                  ...styles.name,
+                  color: theme.secondary,
+                }}
+              >
+                {currentUserData?.name}
+              </Text>
               <Text style={styles.email}>@{currentUserData?.username}</Text>
               <Pressable
-                style={styles.editButton}
+                style={{
+                  ...styles.editButton,
+                  borderColor: theme.primary,
+                }}
                 onPress={() => navigate(ROUTES.EditProfile)}
               >
-                <Text style={styles.edit}>Edit</Text>
+                <Text
+                  style={{
+                    ...styles.edit,
+                    color: theme.secondary,
+                  }}
+                >
+                  Edit
+                </Text>
               </Pressable>
             </View>
           </View>
           <View style={{ ...Style.containerRow }}>
             <TaskContainer
-              icon={<ClockSquareSVG />}
+              icon={<ClockSquareSVG color={theme.secondary} />}
               count="5"
               subtitle="On Going"
             />
-            <Image source={placeholder.spacer} style={{ height: "100%" }} />
+            <Image
+              source={placeholder.spacer}
+              style={{ height: "100%" }}
+              tintColor={theme.borderColor}
+            />
             <TaskContainer
-              icon={<CheckSVG />}
+              icon={<CheckSVG color={theme.secondary} />}
               count="25"
               subtitle="Total Complete"
             />

@@ -8,9 +8,11 @@ import ProjectsCard from "../Projects/components/ProjectsCard";
 import { useTaskData } from "../../providers/TaskDataProvider";
 import debounce from "lodash/debounce";
 import { ITask } from "../../interface/task";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const Search = () => {
   const { searchTaskbyName } = useTaskData();
+  const { theme } = useTheme();
   const [searchText, setSearchText] = useState<string>("");
   const [selectedFilter, setSelectedFilter] = useState<string>("Task");
   const [searchResult, setSearchResult] = useState<ITask[]>([]);
@@ -54,11 +56,21 @@ const Search = () => {
                   style={{
                     ...styles.filterButtonContainer,
                     borderColor:
-                      selectedFilter === item ? colors.purple : "transparent",
+                      selectedFilter === item ? theme.primary : "transparent",
                   }}
                   onPress={() => setSelectedFilter(item)}
                 >
-                  <Text>{item}</Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color:
+                        selectedFilter === item
+                          ? theme.secondary
+                          : colors.gray2,
+                    }}
+                  >
+                    {item}
+                  </Text>
                 </Pressable>
               ))}
             </View>

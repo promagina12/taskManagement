@@ -2,6 +2,7 @@ import { View, Pressable } from "react-native";
 import React, { useState } from "react";
 import Style from "../styles/Style";
 import { colors } from "../styles/colors";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   onPress?: () => void;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const Checkbox = ({ onPress, isChecked }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <Pressable
       onPress={() => {
@@ -19,7 +22,7 @@ const Checkbox = ({ onPress, isChecked }: Props) => {
         height: 20,
         borderRadius: 100,
         borderWidth: 1,
-        borderColor: isChecked ? colors.purple : colors.gray,
+        borderColor: isChecked ? theme.primary : colors.gray,
         ...Style.containerCenter,
       }}
     >
@@ -29,7 +32,7 @@ const Checkbox = ({ onPress, isChecked }: Props) => {
             width: 16,
             height: 16,
             borderRadius: 100,
-            backgroundColor: colors.purple,
+            backgroundColor: theme.primary,
           }}
         />
       )}

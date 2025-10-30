@@ -4,18 +4,20 @@ import { PieChart } from "react-native-gifted-charts";
 import { colors } from "../../../styles/colors";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import Style from "../../../styles/Style";
-
-const pieData = [
-  { value: 40, color: "#B1D199" },
-  { value: 30, color: "#FFB35A" },
-  { value: 30, color: "#756EF3" },
-];
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   labelData?: { label: string; color: string }[];
 }
 
 const StatusChart = ({ labelData }: Props) => {
+  const { theme } = useTheme();
+
+  const pieData = [
+    { value: 40, color: "#B1D199" },
+    { value: 30, color: "#FFB35A" },
+    { value: 30, color: theme.primary },
+  ];
   return (
     <View
       style={{
@@ -29,10 +31,18 @@ const StatusChart = ({ labelData }: Props) => {
         innerRadius={70}
         radius={100}
         data={pieData}
+        backgroundColor={theme.background}
         centerLabelComponent={() => {
           return (
             <View style={Style.containerCenter}>
-              <Text style={styles.percentage}>70%</Text>
+              <Text
+                style={{
+                  ...styles.percentage,
+                  color: theme.secondary,
+                }}
+              >
+                70%
+              </Text>
               <Text style={styles.completeText}>Complete</Text>
             </View>
           );
@@ -44,7 +54,14 @@ const StatusChart = ({ labelData }: Props) => {
             <View
               style={{ ...styles.colorContainer, backgroundColor: item.color }}
             />
-            <Text style={styles.label}>{item.label}</Text>
+            <Text
+              style={{
+                ...styles.label,
+                color: theme.secondary,
+              }}
+            >
+              {item.label}
+            </Text>
           </View>
         ))}
       </View>

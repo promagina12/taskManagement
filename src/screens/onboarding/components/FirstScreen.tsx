@@ -4,8 +4,11 @@ import { placeholder } from "../../../assets";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { colors } from "../../../styles/colors";
 import { responsiveWidth } from "react-native-responsive-dimensions";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 const FirstScreen = () => {
+  const { theme } = useTheme();
+
   return (
     <View style={{ width: responsiveWidth(100) }}>
       <View style={{ height: "60%", paddingRight: 30 }}>
@@ -14,7 +17,7 @@ const FirstScreen = () => {
           style={{ width: "100%", height: "100%" }}
         />
         <Image
-          source={placeholder.onboarding1}
+          source={theme.onBoarding1}
           style={{
             position: "absolute",
             top: 26,
@@ -26,10 +29,30 @@ const FirstScreen = () => {
         />
       </View>
       <View style={{ paddingHorizontal: 30 }}>
-        <Text style={styles.title}>Task Management</Text>
-        <Text style={styles.subTitle}>
-          Let's create a <Text style={styles.span}>space</Text> for your
-          workflows.
+        <Text
+          style={{
+            ...styles.title,
+            color: theme.primary,
+          }}
+        >
+          Task Management
+        </Text>
+        <Text
+          style={{
+            ...styles.subTitle,
+            color: theme.secondary,
+          }}
+        >
+          Let's create a{" "}
+          <Text
+            style={{
+              ...styles.span,
+              color: theme.primary,
+            }}
+          >
+            space
+          </Text>{" "}
+          for your workflows.
         </Text>
       </View>
     </View>
@@ -42,12 +65,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontFamily: FONT_FAMILY.poppinsMedium,
-    color: colors.purple,
   },
   subTitle: {
     fontSize: 45,
     fontFamily: FONT_FAMILY.poppinsRegular,
-    color: colors.darkBlue,
   },
   span: {
     fontFamily: FONT_FAMILY.poppinsSemiBold,

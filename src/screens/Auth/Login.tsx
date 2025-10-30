@@ -11,8 +11,10 @@ import Style from "../../styles/Style";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
 import { signInWithEmail } from "../../utils/signInWithEmail";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const Login = () => {
+  const { theme, isDark } = useTheme();
   const [email, setEmail] = useState<string>("Test3@email.com");
   const [password, setPassword] = useState<string>("password123");
 
@@ -28,7 +30,14 @@ const Login = () => {
     <Page headerType="NAVIGATION" title="Sign In">
       <View style={{ flex: 1, paddingTop: 30, gap: 40 }}>
         <View style={{ gap: 2 }}>
-          <Text style={styles.title}>Welcome Back</Text>
+          <Text
+            style={{
+              ...styles.title,
+              color: theme.secondary,
+            }}
+          >
+            Welcome Back
+          </Text>
           <Text style={styles.subTitle}>
             Please Inter your email address{"\n"}and password for Login
           </Text>
@@ -47,7 +56,14 @@ const Login = () => {
               onChangeText={setPassword}
             />
             <Pressable style={{ alignSelf: "flex-end" }}>
-              <Text style={styles.forgotPassword}>Forgot Password?</Text>
+              <Text
+                style={{
+                  ...styles.forgotPassword,
+                  color: theme.secondary,
+                }}
+              >
+                Forgot Password?
+              </Text>
             </Pressable>
           </View>
           <Button title="Sign In" linearShadow onPress={onLogin} />
@@ -60,10 +76,20 @@ const Login = () => {
               gap: 30,
             }}
           >
-            <Pressable style={styles.iconContainer}>
-              <AppleLogoSVG />
+            <Pressable
+              style={{
+                ...styles.iconContainer,
+                borderColor: theme.borderColor,
+              }}
+            >
+              <AppleLogoSVG color={theme.secondary} />
             </Pressable>
-            <Pressable style={styles.iconContainer}>
+            <Pressable
+              style={{
+                ...styles.iconContainer,
+                borderColor: theme.borderColor,
+              }}
+            >
               <GoogleLogoSVG />
             </Pressable>
           </View>
@@ -77,13 +103,21 @@ const Login = () => {
           <Text
             style={{
               ...styles.signIn,
+              color: isDark ? colors.white : colors.gray,
               fontFamily: FONT_FAMILY.poppinsRegular,
             }}
           >
             Not Registrar Yet?{" "}
           </Text>
           <Pressable onPress={() => navigate(ROUTES.Register)}>
-            <Text style={styles.signUp}>Sign Up</Text>
+            <Text
+              style={{
+                ...styles.signUp,
+                color: theme.primary,
+              }}
+            >
+              Sign Up
+            </Text>
           </Pressable>
         </View>
       </View>

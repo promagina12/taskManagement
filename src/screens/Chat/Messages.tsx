@@ -10,10 +10,12 @@ import { IMessages } from "../../interface/chat";
 import MessageCard from "./Components/MessageCard";
 import { useUserData } from "../../providers/UserDataProvider";
 import MessageInput from "./Components/MessageInput";
+import { useTheme } from "../../providers/ThemeProvider";
 
 type Props = RouteProp<RootStackParamList, "Messages">;
 
 const Messages = () => {
+  const { theme } = useTheme();
   const params = useRoute<Props>().params;
   const { chatId, otherUser } = params || {};
   const { currentUID } = useUserData();
@@ -35,7 +37,12 @@ const Messages = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={{
+        ...styles.container,
+        backgroundColor: theme.background,
+      }}
+    >
       <MessageHeader image={otherUser?.image} name={otherUser?.name} />
       <View style={{ flex: 1 }}>
         <FlatList

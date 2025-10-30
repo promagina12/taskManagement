@@ -6,6 +6,7 @@ import { colors } from "../styles/colors";
 import { FONT_FAMILY } from "../styles/fonts";
 import { goBack } from "../navigation/NavigationService";
 import CloseSVG from "../assets/AppIcon/close";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   title?: string;
@@ -20,6 +21,8 @@ const NavigationHeader: React.FC<Props> = ({
   title,
   isClose,
 }) => {
+  const { theme } = useTheme();
+
   const handleBackPress = () => {
     if (onBackPressed) {
       onBackPressed();
@@ -45,17 +48,21 @@ const NavigationHeader: React.FC<Props> = ({
             borderRadius: 100,
             borderWidth: 1,
             ...Style.containerCenter,
-            borderColor: colors.lightBlue,
+            borderColor: theme.borderColor,
           }}
           onPress={handleBackPress}
         >
-          {isClose ? <CloseSVG color={colors.darkBlue} /> : <ChevronLeftSVG />}
+          {isClose ? (
+            <CloseSVG color={theme.secondary} />
+          ) : (
+            <ChevronLeftSVG color={theme.secondary} />
+          )}
         </Pressable>
       </View>
       <Text
         style={{
           fontSize: 18,
-          color: colors.darkBlue,
+          color: theme.secondary,
           fontFamily: FONT_FAMILY.poppinsMedium,
           top: 3,
         }}

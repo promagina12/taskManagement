@@ -9,6 +9,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { colors } from "../styles/colors";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   value: SharedValue<boolean> | any;
@@ -25,6 +26,8 @@ const Switch = ({
   duration = 400,
   trackColors = { on: colors.purple, off: "#D7D7D7" },
 }: Props) => {
+  const { theme } = useTheme();
+
   const height = useSharedValue(0);
   const width = useSharedValue(0);
 
@@ -65,7 +68,15 @@ const Switch = ({
         }}
         style={[switchStyles.track, style, trackAnimatedStyle]}
       >
-        <Animated.View style={[switchStyles.thumb, thumbAnimatedStyle]} />
+        <Animated.View
+          style={[
+            {
+              ...switchStyles.thumb,
+              backgroundColor: theme.background,
+            },
+            thumbAnimatedStyle,
+          ]}
+        />
       </Animated.View>
     </Pressable>
   );
@@ -78,7 +89,7 @@ const switchStyles = StyleSheet.create({
     alignItems: "flex-start",
     width: 100,
     height: 40,
-    padding: 5,
+    padding: 3,
   },
   thumb: {
     height: "100%",

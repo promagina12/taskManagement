@@ -4,6 +4,7 @@ import Style from "../styles/Style";
 import { colors } from "../styles/colors";
 import ProfileSVG from "../assets/AppIcon/profile";
 import { FONT_FAMILY } from "../styles/fonts";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   image?: string | null;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const UserProfileCard: FC<Props> = ({ image, name, onPress }) => {
+  const { theme } = useTheme();
+
   return (
     <Pressable
       style={{
@@ -26,14 +29,19 @@ const UserProfileCard: FC<Props> = ({ image, name, onPress }) => {
           style={{ width: 40, height: 40, borderRadius: 100 }}
         />
       ) : (
-        <View style={styles.emptyProfile}>
-          <ProfileSVG size={35} color={colors.darkBlue} />
+        <View
+          style={{
+            ...styles.emptyProfile,
+            borderColor: theme.secondary,
+          }}
+        >
+          <ProfileSVG size={30} color={theme.secondary} />
         </View>
       )}
       <Text
         style={{
           fontSize: 15,
-          color: colors.darkBlue,
+          color: theme.secondary,
           fontFamily: FONT_FAMILY.poppinsMedium,
         }}
       >

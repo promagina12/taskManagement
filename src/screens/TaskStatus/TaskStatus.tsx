@@ -8,10 +8,12 @@ import StatusChart from "./components/StatusChart";
 import { FONT_FAMILY } from "../../styles/fonts";
 import ThreeDotsHorizontalSVG from "../../assets/AppIcon/threeDotsHorizontal";
 import { useTaskData } from "../../providers/TaskDataProvider";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const TaskStatus = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const { tasks } = useTaskData();
+  const { theme } = useTheme();
 
   const todo = tasks.filter((task) => task.status === "todo");
   const inProgress = tasks.filter((task) => task.status === "inProgress");
@@ -32,7 +34,7 @@ const TaskStatus = () => {
     },
     {
       label: "Completed",
-      color: "#756EF3",
+      color: theme.primary,
       value: completed.length,
       subVal: 0,
     },
@@ -43,15 +45,27 @@ const TaskStatus = () => {
       headerType="NAVIGATION"
       title="Task Status"
       rightComponent={() => (
-        <Pressable style={styles.addContainer}>
-          <FilterSVG />
+        <Pressable
+          style={{
+            ...styles.addContainer,
+            borderColor: theme.borderColor,
+          }}
+        >
+          <FilterSVG color={theme.secondary} />
         </Pressable>
       )}
     >
       <View style={{ flex: 1, paddingTop: 30, gap: 30 }}>
         <StatusChart labelData={PIE_LABEL} />
         <View style={{ gap: 12 }}>
-          <Text style={styles.monthly}>Monthly</Text>
+          <Text
+            style={{
+              ...styles.monthly,
+              color: theme.secondary,
+            }}
+          >
+            Monthly
+          </Text>
           <View style={{ gap: 16 }}>
             {PIE_LABEL.map((item, index) => {
               const status =
@@ -67,12 +81,19 @@ const TaskStatus = () => {
                   style={{
                     ...styles.statusContainer,
                     borderColor:
-                      selected === index ? colors.purple : colors.lightBlue,
+                      selected === index ? theme.primary : theme.borderColor,
                   }}
                   onPress={() => setSelected(index)}
                 >
                   <View style={{ flex: 1 }}>
-                    <Text style={styles.label}>{item.label}</Text>
+                    <Text
+                      style={{
+                        ...styles.label,
+                        color: theme.secondary,
+                      }}
+                    >
+                      {item.label}
+                    </Text>
                     <Text style={styles.subText}>
                       {item.value} Task now • {item.subVal} {status}
                     </Text>

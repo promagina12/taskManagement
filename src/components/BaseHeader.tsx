@@ -3,10 +3,10 @@ import React from "react";
 import GridSVG from "../assets/AppIcon/grid";
 import BellSVG from "../assets/AppIcon/bell";
 import Style from "../styles/Style";
-import { colors } from "../styles/colors";
 import { FONT_FAMILY } from "../styles/fonts";
 import { navigate } from "../navigation/NavigationService";
 import { ROUTES } from "../navigation/Routes";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   title?: string;
@@ -19,6 +19,8 @@ const BaseHeader: React.FC<Props> = ({
   headerContainerStyle,
   onPressTitle,
 }) => {
+  const { theme } = useTheme();
+
   return (
     <View
       style={[
@@ -39,18 +41,18 @@ const BaseHeader: React.FC<Props> = ({
             borderRadius: 100,
             borderWidth: 1,
             ...Style.containerCenter,
-            borderColor: colors.lightBlue,
+            borderColor: theme.borderColor,
           }}
           onPress={() => navigate(ROUTES.ManageProfile)}
         >
-          <GridSVG />
+          <GridSVG color={theme.secondary} />
         </Pressable>
       </View>
       <Pressable onPress={onPressTitle}>
         <Text
           style={{
             fontSize: 18,
-            color: colors.darkBlue,
+            color: theme.secondary,
             fontFamily: FONT_FAMILY.poppinsMedium,
             top: 3,
           }}
@@ -66,10 +68,10 @@ const BaseHeader: React.FC<Props> = ({
             borderRadius: 100,
             borderWidth: 1,
             ...Style.containerCenter,
-            borderColor: colors.lightBlue,
+            borderColor: theme.borderColor,
           }}
         >
-          <BellSVG />
+          <BellSVG color={theme.secondary} />
         </Pressable>
       </View>
     </View>

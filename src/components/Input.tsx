@@ -14,6 +14,7 @@ import { FONT_FAMILY } from "../styles/fonts";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   value?: string | undefined;
@@ -38,6 +39,7 @@ const Input: React.FC<Props> = ({
   onDateChange,
   textInputProps,
 }) => {
+  const { theme } = useTheme();
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const [showDatePicker, setShowDatePicker] = useState<boolean>(false);
 
@@ -61,7 +63,7 @@ const Input: React.FC<Props> = ({
           style={{
             borderWidth: 1,
             borderRadius: 16,
-            borderColor: isFocus ? colors.purple : colors.lightBlue,
+            borderColor: isFocus ? theme.primary : theme.borderColor,
             ...Style.containerRow,
             paddingVertical: 5,
             paddingHorizontal: 20,
@@ -70,12 +72,12 @@ const Input: React.FC<Props> = ({
         >
           <TextInput
             placeholder={placeholder}
-            placeholderTextColor={colors.gray}
+            placeholderTextColor={theme.textColorSecondary}
             value={value}
             onChangeText={onChangeText}
             style={{
               fontSize: 16,
-              color: colors.darkBlue,
+              color: theme.secondary,
               fontFamily: FONT_FAMILY.poppinsMedium,
               flex: 1,
             }}

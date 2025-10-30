@@ -14,6 +14,7 @@ import ChatOutlineSVG from "../assets/AppIcon/ChatOutline";
 import ProfileSVG from "../assets/AppIcon/profile";
 import ProfileOutlineSVG from "../assets/AppIcon/profileOutline";
 import HomeStack from "./HomeStack";
+import { useTheme } from "../providers/ThemeProvider";
 
 const BottomStack = createBottomTabNavigator();
 
@@ -22,6 +23,8 @@ const CreateTaskPlaceholder = () => {
 };
 
 const BottomStackNavigation = () => {
+  const { theme } = useTheme();
+
   return (
     <BottomStack.Navigator
       screenOptions={{
@@ -35,7 +38,7 @@ const BottomStackNavigation = () => {
         component={HomeStack}
         options={{
           tabBarIcon: ({ focused }) =>
-            focused ? <HomeSVG /> : <HomeOutlineSVG />,
+            focused ? <HomeSVG color={theme.primary} /> : <HomeOutlineSVG />,
         }}
       />
       <BottomStack.Screen
@@ -43,7 +46,7 @@ const BottomStackNavigation = () => {
         component={Projects}
         options={{
           tabBarIcon: ({ focused }) =>
-            focused ? <ProjectsSVG /> : <ProjectsOutlineSVG />,
+            focused ? <ProjectsSVG color={theme.primary} /> : <ProjectsOutlineSVG />,
         }}
       />
       <BottomStack.Screen
@@ -55,7 +58,7 @@ const BottomStackNavigation = () => {
         component={Chat}
         options={{
           tabBarIcon: ({ focused }) =>
-            focused ? <ChatSVG /> : <ChatOutlineSVG />,
+            focused ? <ChatSVG color={theme.primary} /> : <ChatOutlineSVG />,
         }}
       />
       <BottomStack.Screen
@@ -63,7 +66,7 @@ const BottomStackNavigation = () => {
         component={Profile}
         options={{
           tabBarIcon: ({ focused }) =>
-            focused ? <ProfileSVG /> : <ProfileOutlineSVG />,
+            focused ? <ProfileSVG color={theme.primary} /> : <ProfileOutlineSVG />,
         }}
       />
     </BottomStack.Navigator>

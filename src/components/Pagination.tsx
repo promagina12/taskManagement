@@ -7,6 +7,7 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   selected?: number;
@@ -32,6 +33,7 @@ const AnimatedView: React.FC<AnimatedProps> = ({
   size,
   onPress,
 }) => {
+  const { theme } = useTheme();
   const width = useSharedValue<number>(size);
   const selectedIndex = selected === index;
 
@@ -52,7 +54,7 @@ const AnimatedView: React.FC<AnimatedProps> = ({
         style={{
           width,
           height: size,
-          backgroundColor: selectedIndex ? colors.purple : colors.transBlue,
+          backgroundColor: selectedIndex ? theme.primary : colors.transBlue,
           borderRadius: 100,
         }}
       />

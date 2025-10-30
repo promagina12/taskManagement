@@ -11,11 +11,13 @@ import ProjectsCard from "./components/ProjectsCard";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
 import { useTaskData } from "../../providers/TaskDataProvider";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const FILTER = ["Favourites", "Recents", "All"];
 
 const Projects = () => {
   const { tasks } = useTaskData();
+  const { theme } = useTheme();
   const [selectedFilter, setSelectedFilter] = useState<string>(FILTER[0]);
 
   return (
@@ -23,8 +25,13 @@ const Projects = () => {
       headerType="NAVIGATION"
       title="Projects"
       rightComponent={() => (
-        <Pressable style={styles.addContainer}>
-          <AddSVG color={colors.darkBlue} size={20} />
+        <Pressable
+          style={{
+            ...styles.addContainer,
+            borderColor: theme.borderColor,
+          }}
+        >
+          <AddSVG color={theme.secondary} size={20} />
         </Pressable>
       )}
       scrollEnabled

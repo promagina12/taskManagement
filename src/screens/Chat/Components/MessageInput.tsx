@@ -13,6 +13,7 @@ import { colors } from "../../../styles/colors";
 import PaperPlaneSVG from "../../../assets/AppIcon/paperPlane";
 import Style from "../../../styles/Style";
 import { FONT_FAMILY } from "../../../styles/fonts";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   onLayout?: ((event: LayoutChangeEvent) => void) | undefined;
@@ -28,13 +29,14 @@ const MessageInput: FC<Props> = ({
   onPressSend,
 }) => {
   const { bottom } = useSafeAreaInsets();
+  const { theme, isDark } = useTheme();
 
   return (
     <View
       style={{
         position: "absolute",
         bottom: 0,
-        backgroundColor: colors.white,
+        backgroundColor: theme.background,
         width: "100%",
       }}
       onLayout={onLayout}
@@ -44,7 +46,7 @@ const MessageInput: FC<Props> = ({
           style={{
             paddingBottom: bottom ?? 20,
             paddingTop: 10,
-            backgroundColor: colors.white,
+            backgroundColor: theme.background,
             paddingHorizontal: 24,
             ...Style.containerRow,
             gap: 10,
@@ -52,10 +54,10 @@ const MessageInput: FC<Props> = ({
         >
           <TextInput
             placeholder="Message"
-            placeholderTextColor={colors.gray2}
+            placeholderTextColor={theme.textColorSecondary}
             style={{
               flex: 1,
-              backgroundColor: "#357fff10",
+              backgroundColor: isDark ? "#357fff39" : "#357fff10",
               borderRadius: 100,
               paddingHorizontal: 12,
               fontSize: 14,
@@ -67,7 +69,7 @@ const MessageInput: FC<Props> = ({
             onSubmitEditing={onPressSend}
           />
           <Pressable onPress={onPressSend}>
-            <PaperPlaneSVG color={colors.darkBlue} />
+            <PaperPlaneSVG color={theme.secondary} />
           </Pressable>
         </View>
       </DropShadow>

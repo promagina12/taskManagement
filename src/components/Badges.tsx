@@ -3,6 +3,7 @@ import React from "react";
 import { colors } from "../styles/colors";
 import { FONT_FAMILY } from "../styles/fonts";
 import Style from "../styles/Style";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   label?: string;
@@ -12,6 +13,8 @@ interface Props {
 }
 
 const Badges = ({ data, label, onPress, selected }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <View style={{ gap: 12 }}>
       <Text style={styles.title}>{label}</Text>
@@ -26,14 +29,15 @@ const Badges = ({ data, label, onPress, selected }: Props) => {
             key={index}
             style={{
               ...styles.button,
-              borderColor: selected === item ? colors.purple : colors.lightBlue,
+              borderColor:
+                selected === item ? theme.primary : theme.borderColor,
             }}
             onPress={() => onPress?.(item)}
           >
             <Text
               style={{
                 ...styles.textStyle,
-                color: selected === item ? colors.darkBlue : colors.gray2,
+                color: selected === item ? theme.secondary : colors.gray2,
               }}
             >
               {item}

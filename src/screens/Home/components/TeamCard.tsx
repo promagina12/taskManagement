@@ -8,6 +8,7 @@ import ProgressBar from "../../../components/ProgressBar";
 import Style from "../../../styles/Style";
 import { IUser } from "../../../interface/users";
 import ProfileSVG from "../../../assets/AppIcon/profile";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   selected: boolean;
@@ -22,21 +23,33 @@ const TeamCard: React.FC<Props> = ({
   onPress,
   membersInfo,
 }) => {
+  const { theme, isDark } = useTheme();
+
   return (
     <Pressable
       style={{
         ...styles.container,
-        backgroundColor: selected ? colors.purple : colors.white,
-        borderColor: selected ? colors.purple : "#EDF4FF",
+        backgroundColor: selected ? theme.primary : theme.background,
+        borderColor: selected ? theme.primary : theme.borderColor,
       }}
       onPress={onPress}
     >
-      <Image source={placeholder.teamCardBG} style={styles.bgImg} />
+      {isDark ? (
+        selected && (
+          <Image source={placeholder.teamCardBG} style={styles.bgImg} />
+        )
+      ) : (
+        <Image source={placeholder.teamCardBG} style={styles.bgImg} />
+      )}
       <View style={{ gap: 4 }}>
         <Text
           style={{
             ...styles.title,
-            color: selected ? colors.white : colors.darkBlue,
+            color: selected
+              ? colors.white
+              : isDark
+              ? colors.white
+              : colors.darkBlue,
           }}
         >
           {name}
@@ -52,7 +65,7 @@ const TeamCard: React.FC<Props> = ({
       </View>
       <View style={{ ...Style.containerSpaceBetween }}>
         <View style={{ width: 82, height: 32 }}>
-          {membersInfo?.map((item, index) => {
+          {membersInfo?.slice(0, 3).map((item, index) => {
             return item.image ? (
               <Image
                 key={index}
@@ -64,17 +77,18 @@ const TeamCard: React.FC<Props> = ({
               />
             ) : (
               <View
+                key={index}
                 style={{
                   ...styles.img,
                   left: index * 20,
                   borderColor: colors.white,
-                  backgroundColor: selected ? colors.purple : colors.white,
+                  backgroundColor: selected ? theme.primary : theme.background,
                   ...Style.containerCenter,
                 }}
               >
                 <ProfileSVG
                   size={25}
-                  color={selected ? colors.white : colors.darkBlue}
+                  color={selected ? colors.white : theme.secondary}
                 />
               </View>
             );
@@ -93,13 +107,16 @@ const TeamCard: React.FC<Props> = ({
             <Text
               style={{
                 ...styles.progress,
-                color: selected ? colors.white : colors.darkBlue,
+                color: selected ? colors.white : theme.secondary,
               }}
             >
               50/80
             </Text>
           </View>
-          <ProgressBar selected={selected} />
+          <ProgressBar
+            selected={selected}
+            {...(isDark && { color: colors.white, bgColor: "#004CCD" })}
+          />
         </View>
       </View>
     </Pressable>

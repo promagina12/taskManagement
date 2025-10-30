@@ -3,6 +3,7 @@ import React from "react";
 import Style from "../../styles/Style";
 import { colors } from "../../styles/colors";
 import { FONT_FAMILY } from "../../styles/fonts";
+import { useTheme } from "../../providers/ThemeProvider";
 
 interface Props {
   label?: string;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const TaskButton = ({ label, icon, action }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <Pressable
       style={{
@@ -19,7 +22,7 @@ const TaskButton = ({ label, icon, action }: Props) => {
         paddingHorizontal: 20,
         borderRadius: 12,
         ...Style.containerRow,
-        borderColor: colors.lightBlue,
+        borderColor: theme.borderColor,
         gap: 12,
       }}
       onPress={action}
@@ -28,7 +31,7 @@ const TaskButton = ({ label, icon, action }: Props) => {
       <Text
         style={{
           fontSize: 16,
-          color: colors.darkBlue,
+          color: theme.secondary,
           fontFamily: FONT_FAMILY.poppinsMedium,
         }}
       >

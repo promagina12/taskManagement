@@ -22,8 +22,10 @@ import { useTaskData } from "../../providers/TaskDataProvider";
 import { ITask } from "../../interface/task";
 import { isEmpty } from "lodash";
 import { useTeamData } from "../../providers/TeamDataProvider";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const Home = () => {
+  const { theme, isDark } = useTheme();
   const flatlistRef = useRef<FlatList>(null);
   const viewabilityConfig = useRef({
     minimumViewTime: 300,
@@ -66,7 +68,14 @@ const Home = () => {
       onPressTitle={() => navigate(ROUTES.Calendar)}
     >
       <View style={{ flex: 1, gap: 30, paddingHorizontal: 24, paddingTop: 20 }}>
-        <Text style={styles.title}>Let’s make a{"\n"}habits together 🙌</Text>
+        <Text
+          style={{
+            ...styles.title,
+            color: theme.secondary,
+          }}
+        >
+          Let’s make a{"\n"}habits together 🙌
+        </Text>
         <View style={{ width: responsiveWidth(100), left: -24 }}>
           <FlatList
             ref={flatlistRef}
@@ -111,9 +120,18 @@ const Home = () => {
         {!isEmpty(tasks) && (
           <View style={{ gap: 20 }}>
             <View style={Style.containerSpaceBetween}>
-              <Text style={styles.inProgressTitle}>In Progress</Text>
+              <Text
+                style={{
+                  ...styles.inProgressTitle,
+                  color: theme.secondary,
+                }}
+              >
+                In Progress
+              </Text>
               <Pressable onPress={() => navigate(ROUTES.TaskStatus)}>
-                <ChevronRightSVG />
+                <ChevronRightSVG
+                  color={isDark ? colors.white : colors.purple}
+                />
               </Pressable>
             </View>
             <View style={{ gap: 16 }}>

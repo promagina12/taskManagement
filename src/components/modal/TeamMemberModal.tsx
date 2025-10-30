@@ -9,8 +9,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { responsiveHeight } from "react-native-responsive-dimensions";
 import UserProfileCard from "../UserProfileCard";
 import { useUserData } from "../../providers/UserDataProvider";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const TeamMemberModal = () => {
+  const { theme } = useTheme();
   const { users } = useUserData();
   const { bottom } = useSafeAreaInsets();
 

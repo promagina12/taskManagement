@@ -5,19 +5,41 @@ import { colors } from "../../../styles/colors";
 import Style from "../../../styles/Style";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { placeholder } from "../../../assets";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   title?: string;
 }
 
 const ProjectsCard: React.FC<Props> = ({ title }) => {
+  const { theme, isDark } = useTheme();
+
   return (
-    <View style={styles.container}>
+    <View
+      style={{
+        ...styles.container,
+        borderColor: theme.borderColor,
+      }}
+    >
       <View>
         <View style={Style.containerSpaceBetween}>
-          <Text style={styles.title}>{title}</Text>
+          <Text
+            style={{
+              ...styles.title,
+              color: theme.secondary,
+            }}
+          >
+            {title}
+          </Text>
           <View style={styles.progressContainer}>
-            <Text style={styles.progress}>10/20</Text>
+            <Text
+              style={{
+                ...styles.progress,
+                color: theme.secondary,
+              }}
+            >
+              10/20
+            </Text>
           </View>
         </View>
         <Text style={styles.category}>Design</Text>
@@ -41,7 +63,11 @@ const ProjectsCard: React.FC<Props> = ({ title }) => {
           ))}
         </View>
         <View style={{ flex: 1 }}>
-          <ProgressBar bgColor="#ECF4E5" color="#B0D97F" height={8} />
+          <ProgressBar
+            bgColor={isDark ? "#212719" : "#ECF4E5"}
+            color="#B0D97F"
+            height={8}
+          />
         </View>
       </View>
     </View>

@@ -21,6 +21,7 @@ export interface IUserDataContext {
   getAllUsers: (callback: (users: IUser[]) => void) => Promise<void>;
   members: IUser[];
   setMembers: React.Dispatch<React.SetStateAction<IUser[]>>;
+  searchUserbyName: (searchText: string) => Promise<IUser[] | undefined>;
 }
 
 interface Props {
@@ -136,6 +137,28 @@ export default ({ children }: Props) => {
     });
   };
 
+  const searchUserbyName = async (searchText: string) => {
+    console.log('searchText: ', searchText)
+
+    try {
+      const querySnapshot = await usersRef
+        .where("nameLowercase", ">=", searchText.toLowerCase())
+        .where("nameLowercase", "<=", searchText.toLowerCase() + "\uf8ff")
+        .get();
+
+      console.log("querySnapshot: ", querySnapshot);
+
+      const searchedUsers: IUser[] = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return searchedUsers;
+    } catch (error) {
+      console.log("ERROR: ", error);
+    }
+  };
+
   const onSignOut = async () => {
     try {
       await auth().signOut();
@@ -162,6 +185,7 @@ export default ({ children }: Props) => {
         getAllUsers,
         members,
         setMembers,
+        searchUserbyName,
       }}
     >
       {children}

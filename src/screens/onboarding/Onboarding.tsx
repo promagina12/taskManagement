@@ -15,9 +15,13 @@ import { SwiperFlatList } from "react-native-swiper-flatlist";
 import { responsiveWidth } from "react-native-responsive-dimensions";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
+import ArrowLeftSVG from "../../assets/AppIcon/arrowLeft";
+import Style from "../../styles/Style";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const Onboarding = () => {
   const { bottom } = useSafeAreaInsets();
+  const { theme } = useTheme();
   const scrollRef = useRef<SwiperFlatList>(null);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -37,7 +41,7 @@ const Onboarding = () => {
   }, [selectedIndex]);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: theme.background }}>
       <View style={{ flex: 1 }}>
         <SwiperFlatList
           horizontal
@@ -71,7 +75,14 @@ const Onboarding = () => {
             }}
           />
           <Pressable style={styles.skipContainer}>
-            <Text style={styles.skip}>Skip</Text>
+            <Text
+              style={{
+                ...styles.skip,
+                color: theme.secondary,
+              }}
+            >
+              Skip
+            </Text>
           </Pressable>
           <Pressable
             style={{
@@ -80,7 +91,21 @@ const Onboarding = () => {
             }}
             onPress={onNextPage}
           >
-            <Image source={placeholder.onboardingNext} />
+            <Image
+              source={placeholder.onboardingNext}
+              style={{ width: 129, height: 191 }}
+              tintColor={theme.primary}
+            />
+            <View
+              style={{
+                position: "absolute",
+                right: 27,
+                bottom: 48,
+                transform: [{ rotate: "180deg" }],
+              }}
+            >
+              <ArrowLeftSVG size={27} color={colors.white} />
+            </View>
           </Pressable>
         </View>
       </View>
@@ -93,7 +118,6 @@ export default Onboarding;
 const styles = StyleSheet.create({
   skip: {
     fontSize: 14,
-    color: colors.darkBlue,
     fontFamily: FONT_FAMILY.poppinsRegular,
   },
   skipContainer: {
@@ -104,5 +128,6 @@ const styles = StyleSheet.create({
   nextContainer: {
     position: "absolute",
     right: 0,
+    ...Style.containerCenter,
   },
 });

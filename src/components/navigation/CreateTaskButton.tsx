@@ -13,38 +13,45 @@ import CloseSVG from "../../assets/AppIcon/close";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
 import PenSquareSVG from "../../assets/AppIcon/penSquare";
-
-const TASK_BUTTONS = [
-  {
-    label: "Create Task",
-    icon: <PenSquareSVG />,
-    action: () => navigate(ROUTES.AddTask),
-  },
-  {
-    label: "Create Project",
-    icon: <AddSquareSVG />,
-    action: () => {},
-  },
-  {
-    label: "Create Team",
-    icon: <UsersSVG />,
-    action: () => navigate(ROUTES.CreateTeam),
-  },
-  {
-    label: "Create Event",
-    icon: <ClockSVG />,
-    action: () => {},
-  },
-];
+import { useTheme } from "../../providers/ThemeProvider";
 
 const CreateTaskButton = () => {
   const actionSheetRef = useRef<ActionSheetRef>(null);
+  const { theme, isDark } = useTheme();
+
+  const TASK_BUTTONS = [
+    {
+      label: "Create Task",
+      icon: <PenSquareSVG color={theme.secondary} />,
+      action: () => navigate(ROUTES.AddTask),
+    },
+    {
+      label: "Create Project",
+      icon: <AddSquareSVG color={theme.secondary} />,
+      action: () => {},
+    },
+    {
+      label: "Create Team",
+      icon: <UsersSVG color={theme.secondary} />,
+      action: () => navigate(ROUTES.CreateTeam),
+    },
+    {
+      label: "Create Event",
+      icon: <ClockSVG color={theme.secondary} />,
+      action: () => {},
+    },
+  ];
 
   return (
     <>
       <Pressable onPress={() => actionSheetRef.current?.show()}>
         <DropShadow style={styles.dropShadow}>
-          <View style={styles.purpleButtonContainer}>
+          <View
+            style={{
+              ...styles.purpleButtonContainer,
+              backgroundColor: theme.primary,
+            }}
+          >
             <AddSVG />
           </View>
         </DropShadow>
@@ -53,9 +60,19 @@ const CreateTaskButton = () => {
       <ActionSheet
         ref={actionSheetRef}
         gestureEnabled={true}
-        indicatorStyle={styles.indicatorStyle}
+        indicatorStyle={{
+          ...styles.indicatorStyle,
+          backgroundColor: isDark ? "#373C4E" : colors.lightBlue,
+        }}
+        containerStyle={{ backgroundColor: theme.background }}
       >
-        <View style={{ paddingHorizontal: 24, paddingVertical: 30, gap: 16 }}>
+        <View
+          style={{
+            paddingHorizontal: 24,
+            paddingVertical: 30,
+            gap: 16,
+          }}
+        >
           {TASK_BUTTONS.map((button, index) => (
             <TaskButton
               key={index}
@@ -74,10 +91,9 @@ const CreateTaskButton = () => {
               <View
                 style={{
                   ...styles.purpleButtonContainer,
-                  borderWidth: 1,
-                  borderColor: colors.lightBlue,
                   width: 42,
                   height: 42,
+                  backgroundColor: theme.primary,
                 }}
               >
                 <CloseSVG />

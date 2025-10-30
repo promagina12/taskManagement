@@ -12,6 +12,7 @@ import { colors } from "../styles/colors";
 import { FONT_FAMILY } from "../styles/fonts";
 import { placeholder } from "../assets";
 import DropShadow from "react-native-drop-shadow";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   linearShadow?: boolean;
@@ -26,6 +27,25 @@ const Button: React.FC<Props> = ({
   title,
   containerStyle,
 }) => {
+  const { theme, isDark } = useTheme();
+
+  if (isDark) {
+    return (
+      <Pressable
+        style={[
+          {
+            ...styles.buttonContainer,
+            backgroundColor: theme.primary,
+          },
+          containerStyle,
+        ]}
+        onPress={onPress}
+      >
+        <Text style={styles.title}>{title}</Text>
+      </Pressable>
+    );
+  }
+
   if (!linearShadow) {
     return (
       <DropShadow style={styles.dropShadow}>

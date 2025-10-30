@@ -20,6 +20,7 @@ import Toast from "react-native-toast-message";
 import { useUserData } from "../../providers/UserDataProvider";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../../interface/stack";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const TYPE = ["Private", "Public", "Secret"];
 
@@ -31,6 +32,7 @@ const CreateTeam = () => {
 
   const [selectedType, setSelectedType] = useState<string | null>(null);
   const [img, setImg] = useState<string | null>(null);
+  const { theme } = useTheme();
   const { createTeam, getTeamById } = useTeamData();
   const { members, setMembers } = useUserData();
 
@@ -131,15 +133,27 @@ const CreateTeam = () => {
           }}
         >
           {img ? (
-            <Pressable style={styles.addLogo} onPress={onSelectedLogo}>
+            <Pressable
+              style={{
+                ...styles.addLogo,
+                borderColor: theme.primary,
+              }}
+              onPress={onSelectedLogo}
+            >
               <Image
                 source={{ uri: img }}
                 style={{ width: "100%", height: "100%", borderRadius: 100 }}
               />
             </Pressable>
           ) : (
-            <Pressable style={styles.addLogo} onPress={onSelectedLogo}>
-              <AddSVG color={colors.purple} size={30} />
+            <Pressable
+              style={{
+                ...styles.addLogo,
+                borderColor: theme.primary,
+              }}
+              onPress={onSelectedLogo}
+            >
+              <AddSVG color={theme.primary} size={30} />
             </Pressable>
           )}
           <View
@@ -147,7 +161,14 @@ const CreateTeam = () => {
               ...Style.containerCenter,
             }}
           >
-            <Text style={styles.uploadText}>Upload logo file</Text>
+            <Text
+              style={{
+                ...styles.uploadText,
+                color: theme.secondary,
+              }}
+            >
+              Upload logo file
+            </Text>
             <Text style={styles.subText}>Your logo will publish always</Text>
           </View>
         </View>
@@ -164,7 +185,7 @@ const CreateTeam = () => {
           name="name"
         />
         <TeamMember />
-        <View style={{ height: 1, backgroundColor: colors.lightBlue }} />
+        <View style={{ height: 1, backgroundColor: theme.borderColor }} />
         <Badges
           data={TYPE}
           label="Type"

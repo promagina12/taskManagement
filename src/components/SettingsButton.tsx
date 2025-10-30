@@ -7,6 +7,7 @@ import { FONT_FAMILY } from "../styles/fonts";
 import Switch from "./Switch";
 import { useSharedValue } from "react-native-reanimated";
 import Checkbox from "./Checkbox";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   title: string;
@@ -21,6 +22,7 @@ const SettingsButton = ({
   type = "default",
   checkBoxValue = false,
 }: Props) => {
+  const { theme } = useTheme();
   const isOn = useSharedValue(false);
 
   const handlePress = () => {
@@ -42,21 +44,26 @@ const SettingsButton = ({
         height: 56,
         borderWidth: 1,
         borderRadius: 12,
-        borderColor: colors.lightBlue,
+        borderColor:
+          type === "checkbox"
+            ? checkBoxValue
+              ? theme.primary
+              : theme.borderColor
+            : theme.borderColor,
       }}
       onPress={onPressSettings}
     >
       <Text
         style={{
           fontSize: 16,
-          color: colors.darkBlue,
+          color: theme.secondary,
           fontFamily: FONT_FAMILY.poppinsMedium,
         }}
       >
         {title}
       </Text>
       {type === "default" ? (
-        <ChevronRightSVG color={colors.darkBlue} />
+        <ChevronRightSVG color={theme.secondary} />
       ) : type === "switch" ? (
         <Switch
           value={isOn}
@@ -65,6 +72,10 @@ const SettingsButton = ({
             onPress?.();
           }}
           style={{ width: 35, height: 20 }}
+          trackColors={{
+            on: theme.primary,
+            off: theme.tertiary,
+          }}
         />
       ) : type === "checkbox" ? (
         <Checkbox onPress={onPressSettings} isChecked={checkBoxValue} />

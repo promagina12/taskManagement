@@ -7,6 +7,7 @@ import ThreeDotsHorizontalSVG from "../../../assets/AppIcon/threeDotsHorizontal"
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { colors } from "../../../styles/colors";
 import ProfileSVG from "../../../assets/AppIcon/profile";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   name?: string;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 const MessageHeader: FC<Props> = ({ image, name }) => {
+  const { theme, isDark } = useTheme();
+
   return (
     <View
       style={{
@@ -31,7 +34,7 @@ const MessageHeader: FC<Props> = ({ image, name }) => {
         }}
       >
         <Pressable onPress={goBack}>
-          <ArrowLeftSVG color={colors.darkBlue} />
+          <ArrowLeftSVG color={theme.secondary} />
         </Pressable>
         <View style={{ ...Style.containerRow, gap: 10 }}>
           {image ? (
@@ -40,14 +43,19 @@ const MessageHeader: FC<Props> = ({ image, name }) => {
               style={{ width: 42, height: 42, borderRadius: 100 }}
             />
           ) : (
-            <View style={styles.emptyProfile}>
-              <ProfileSVG size={35} color={colors.darkBlue} />
+            <View
+              style={{
+                ...styles.emptyProfile,
+                borderColor: theme.secondary,
+              }}
+            >
+              <ProfileSVG size={30} color={theme.secondary} />
             </View>
           )}
           <Text
             style={{
               fontSize: 18,
-              color: colors.darkBlue,
+              color: theme.secondary,
               fontFamily: FONT_FAMILY.poppinsMedium,
               top: 3,
             }}
@@ -57,7 +65,7 @@ const MessageHeader: FC<Props> = ({ image, name }) => {
         </View>
       </View>
       <Pressable>
-        <ThreeDotsHorizontalSVG color={colors.darkBlue} />
+        <ThreeDotsHorizontalSVG color={theme.secondary} />
       </Pressable>
     </View>
   );

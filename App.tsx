@@ -14,6 +14,7 @@ import MainStack from "./src/navigation/MainStack";
 import Toast from "react-native-toast-message";
 import SharedProviders from "./src/providers/SharedProviders";
 import "./src/utils/sheets";
+import ThemeProvider from "./src/providers/ThemeProvider";
 
 export default function App() {
   const [loaded] = useFonts({
@@ -31,11 +32,13 @@ export default function App() {
     <>
       <StatusBar />
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <SharedProviders>
-          <NavigationContainer ref={navigationRef}>
-            <MainStack />
-          </NavigationContainer>
-        </SharedProviders>
+        <ThemeProvider>
+          <SharedProviders>
+            <NavigationContainer ref={navigationRef}>
+              <MainStack />
+            </NavigationContainer>
+          </SharedProviders>
+        </ThemeProvider>
       </GestureHandlerRootView>
       <Toast />
     </>

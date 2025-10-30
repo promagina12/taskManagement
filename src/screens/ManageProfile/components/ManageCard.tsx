@@ -3,6 +3,7 @@ import React from "react";
 import { colors } from "../../../styles/colors";
 import Style from "../../../styles/Style";
 import { FONT_FAMILY } from "../../../styles/fonts";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   label?: string;
@@ -10,6 +11,8 @@ interface Props {
 }
 
 const ManageCard = ({ label, value }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <View
       style={{
@@ -18,14 +21,14 @@ const ManageCard = ({ label, value }: Props) => {
         paddingHorizontal: 20,
         paddingVertical: 18,
         borderRadius: 16,
-        borderColor: colors.lightBlue,
+        borderColor: theme.borderColor,
         ...Style.containerSpaceBetween,
       }}
     >
       <Text
         style={{
           fontSize: 16,
-          color: colors.darkBlue,
+          color: theme.secondary,
           fontFamily: FONT_FAMILY.poppinsMedium,
         }}
       >
@@ -38,13 +41,13 @@ const ManageCard = ({ label, value }: Props) => {
           ...Style.containerCenter,
           borderWidth: 1,
           borderRadius: 8,
-          borderColor: colors.lightBlue,
+          borderColor: theme.borderColor,
         }}
       >
         <Text
           style={{
             fontSize: 12,
-            color: colors.darkBlue,
+            color: theme.secondary,
             fontFamily: FONT_FAMILY.poppinsRegular,
           }}
         >

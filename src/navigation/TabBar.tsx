@@ -6,9 +6,11 @@ import CreateTaskButton from "../components/navigation/CreateTaskButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { navigate } from "./NavigationService";
 import { colors } from "../styles/colors";
+import { useTheme } from "../providers/ThemeProvider";
 
 const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors = {} }) => {
   const { bottom } = useSafeAreaInsets();
+  const { theme } = useTheme();
 
   return (
     <View
@@ -21,7 +23,7 @@ const TabBar: React.FC<BottomTabBarProps> = ({ state, descriptors = {} }) => {
         paddingBottom: bottom + 16,
         ...Style.containerSpaceBetween,
         gap: 10,
-        backgroundColor: colors.white,
+        backgroundColor: theme.background,
       }}
     >
       {state?.routes?.map((route, idx) => {

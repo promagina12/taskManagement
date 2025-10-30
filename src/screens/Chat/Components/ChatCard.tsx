@@ -5,6 +5,7 @@ import Style from "../../../styles/Style";
 import { colors } from "../../../styles/colors";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import ProfileSVG from "../../../assets/AppIcon/profile";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   name?: string;
@@ -13,6 +14,8 @@ interface Props {
 }
 
 const ChatCard: React.FC<Props> = ({ name, image, onPress }) => {
+  const { theme } = useTheme();
+
   return (
     <Pressable
       style={{
@@ -33,8 +36,13 @@ const ChatCard: React.FC<Props> = ({ name, image, onPress }) => {
               style={{ width: 48, height: 48, borderRadius: 100 }}
             />
           ) : (
-            <View style={styles.emptyProfile}>
-              <ProfileSVG size={40} color={colors.darkBlue} />
+            <View
+              style={{
+                ...styles.emptyProfile,
+                borderColor: theme.secondary,
+              }}
+            >
+              <ProfileSVG size={35} color={theme.secondary} />
             </View>
           )}
           <View style={styles.badge} />
@@ -43,7 +51,7 @@ const ChatCard: React.FC<Props> = ({ name, image, onPress }) => {
           <Text
             style={{
               fontSize: 14,
-              color: colors.darkBlue,
+              color: theme.secondary,
               fontFamily: FONT_FAMILY.poppinsMedium,
             }}
           >

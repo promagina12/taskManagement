@@ -11,9 +11,11 @@ import { useChatData } from "../../providers/ChatDataProvider";
 import { IChat } from "../../interface/chat";
 import { navigate } from "../../navigation/NavigationService";
 import { ROUTES } from "../../navigation/Routes";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const Chat = () => {
   const { getAllChats } = useChatData();
+  const { theme } = useTheme();
   const [chats, setChats] = useState<IChat[]>([]);
 
   useEffect(() => {
@@ -26,10 +28,13 @@ const Chat = () => {
       title="Chat"
       rightComponent={() => (
         <Pressable
-          style={styles.addContainer}
+          style={{
+            ...styles.addContainer,
+            borderColor: theme.borderColor,
+          }}
           onPress={() => navigate(ROUTES.CreateChat)}
         >
-          <AddSVG color={colors.darkBlue} size={20} />
+          <AddSVG color={theme.secondary} size={20} />
         </Pressable>
       )}
     >
@@ -60,7 +65,11 @@ const Chat = () => {
         }
         ItemSeparatorComponent={() => (
           <View
-            style={{ height: 1, backgroundColor: "#E9F1FF", marginTop: 16 }}
+            style={{
+              height: 1,
+              backgroundColor: theme.borderColor,
+              marginTop: 16,
+            }}
           />
         )}
         showsVerticalScrollIndicator={false}

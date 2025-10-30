@@ -3,6 +3,7 @@ import React from "react";
 import Style from "../../../styles/Style";
 import { colors } from "../../../styles/colors";
 import { FONT_FAMILY } from "../../../styles/fonts";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   icon?: React.ReactNode;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const TaskContainer = ({ icon, count, subtitle }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <View
       style={{
@@ -24,7 +27,7 @@ const TaskContainer = ({ icon, count, subtitle }: Props) => {
         <Text
           style={{
             fontSize: 22,
-            color: colors.darkBlue,
+            color: theme.secondary,
             fontFamily: FONT_FAMILY.poppinsSemiBold,
           }}
         >

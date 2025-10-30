@@ -2,6 +2,7 @@ import { Text, Pressable, StyleSheet } from "react-native";
 import React from "react";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { colors } from "../../../styles/colors";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 interface Props {
   label: string;
@@ -10,18 +11,20 @@ interface Props {
 }
 
 const FilterButton = ({ label, onPress, selected }: Props) => {
+  const { theme } = useTheme();
+
   return (
     <Pressable
       style={{
         ...styles.filterContainer,
-        borderColor: selected ? colors.purple : "transparent",
+        borderColor: selected ? theme.primary : "transparent",
       }}
       onPress={onPress}
     >
       <Text
         style={{
           ...styles.filter,
-          color: selected ? colors.darkBlue : colors.gray2,
+          color: selected ? theme.secondary : colors.gray2,
         }}
       >
         {label}

@@ -9,8 +9,10 @@ import { SheetManager } from "react-native-actions-sheet";
 import { IUser } from "../../../interface/users";
 import { useUserData } from "../../../providers/UserDataProvider";
 import ProfileSVG from "../../../assets/AppIcon/profile";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 const TeamMember = () => {
+  const { theme } = useTheme();
   const { members, setMembers } = useUserData();
   const [member, setMember] = useState<IUser | null>(null);
 
@@ -48,11 +50,23 @@ const TeamMember = () => {
             {item?.image ? (
               <Image source={{ uri: item?.image }} style={styles.avatar} />
             ) : (
-              <View style={styles.emptyProfile}>
-                <ProfileSVG size={35} color={colors.darkBlue} />
+              <View
+                style={{
+                  ...styles.emptyProfile,
+                  borderColor: theme.secondary,
+                }}
+              >
+                <ProfileSVG size={30} color={theme.secondary} />
               </View>
             )}
-            <Text style={styles.name}>{item?.name}</Text>
+            <Text
+              style={{
+                ...styles.name,
+                color: theme.secondary,
+              }}
+            >
+              {item?.name}
+            </Text>
           </View>
         ))}
         <View
@@ -60,13 +74,19 @@ const TeamMember = () => {
             gap: 6,
           }}
         >
-          <Pressable style={styles.addButton} onPress={onPressAdd}>
-            <AddSVG size={24} color={colors.purple} />
+          <Pressable
+            style={{
+              ...styles.addButton,
+              borderColor: theme.primary,
+            }}
+            onPress={onPressAdd}
+          >
+            <AddSVG size={24} color={theme.primary} />
           </Pressable>
           <Text
             style={{
               ...styles.name,
-              color: colors.white,
+              color: theme.background,
             }}
           >
             Add
@@ -99,11 +119,11 @@ const styles = StyleSheet.create({
     borderColor: colors.purple,
   },
   emptyProfile: {
-      width: 40,
-      height: 40,
-      borderWidth: 1.5,
-      borderRadius: 100,
-      ...Style.containerCenter,
-      borderColor: colors.darkBlue,
-    },
+    width: 40,
+    height: 40,
+    borderWidth: 1.5,
+    borderRadius: 100,
+    ...Style.containerCenter,
+    borderColor: colors.darkBlue,
+  },
 });

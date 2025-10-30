@@ -5,6 +5,7 @@ import { colors } from "../styles/colors";
 import BaseHeader from "../components/BaseHeader";
 import NavigationHeader from "../components/NavigationHeader";
 import { responsiveHeight } from "react-native-responsive-dimensions";
+import { useTheme } from "../providers/ThemeProvider";
 
 interface Props {
   scrollEnabled?: boolean;
@@ -31,6 +32,7 @@ const Page: React.FC<Props> = ({
   bottomComponent,
   onPressTitle,
 }) => {
+  const { theme } = useTheme();
   const PageContainer = scrollEnabled ? ScrollView : View;
 
   return (
@@ -38,7 +40,7 @@ const Page: React.FC<Props> = ({
       style={[
         {
           flex: 1,
-          backgroundColor: colors.white,
+          backgroundColor: theme.background,
           paddingHorizontal: 24,
         },
         containerStyle,

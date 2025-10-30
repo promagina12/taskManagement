@@ -18,6 +18,7 @@ import { addTaskSchema } from "../../utils/schema";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../../interface/stack";
 import { useUserData } from "../../providers/UserDataProvider";
+import { useTheme } from "../../providers/ThemeProvider";
 
 type Props = RouteProp<RootStackParamList, "AddTask">;
 

@@ -5,8 +5,11 @@ import Style from "../../../styles/Style";
 import { placeholder } from "../../../assets";
 import { FONT_FAMILY } from "../../../styles/fonts";
 import { colors } from "../../../styles/colors";
+import { useTheme } from "../../../providers/ThemeProvider";
 
 const ThirdScreen = () => {
+  const { theme } = useTheme();
+
   return (
     <View style={{ width: responsiveWidth(100) }}>
       <View
@@ -17,21 +20,42 @@ const ThirdScreen = () => {
           style={{ width: "100%", height: "100%" }}
         />
         <View style={{ position: "absolute" }}>
-          <Image source={placeholder.onboarding3} resizeMode="contain" />
+          <Image source={theme.onBoarding3} resizeMode="contain" />
           <Image
-            source={placeholder.chatBox3}
+            source={theme.chatBox3}
             style={{ position: "absolute", top: -35, left: -30 }}
           />
           <Image
-            source={placeholder.chatBox4}
+            source={theme.chatBox4}
             style={{ position: "absolute", right: -33, top: 125 }}
           />
         </View>
       </View>
       <View style={{ paddingHorizontal: 30 }}>
-        <Text style={styles.title}>Task Management</Text>
-        <Text style={styles.subTitle}>
-          Manage your <Text style={styles.span}>Tasks</Text> quickly for Results✌
+        <Text
+          style={{
+            ...styles.title,
+            color: theme.primary,
+          }}
+        >
+          Task Management
+        </Text>
+        <Text
+          style={{
+            ...styles.subTitle,
+            color: theme.secondary,
+          }}
+        >
+          Manage your{" "}
+          <Text
+            style={{
+              ...styles.span,
+              color: theme.primary,
+            }}
+          >
+            Tasks
+          </Text>{" "}
+          quickly for Results✌
         </Text>
       </View>
     </View>

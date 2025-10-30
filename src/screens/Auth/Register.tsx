@@ -10,9 +10,11 @@ import AppleLogoSVG from "../../assets/AppIcon/appleLogo";
 import GoogleLogoSVG from "../../assets/AppIcon/googleLogo";
 import { goBack } from "../../navigation/NavigationService";
 import { useUserData } from "../../providers/UserDataProvider";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const Register = () => {
   const { registerUser } = useUserData();
+  const { theme, isDark } = useTheme();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -36,7 +38,14 @@ const Register = () => {
     <Page headerType="NAVIGATION" title="Sign Up">
       <View style={{ flex: 1, paddingTop: 30, gap: 40 }}>
         <View style={{ gap: 2 }}>
-          <Text style={styles.title}>Create Account</Text>
+          <Text
+            style={{
+              ...styles.title,
+              color: theme.secondary,
+            }}
+          >
+            Create Account
+          </Text>
           <Text style={styles.subTitle}>
             Please Inter your Informatioin and{"\n"}create your account
           </Text>
@@ -68,10 +77,20 @@ const Register = () => {
               gap: 30,
             }}
           >
-            <Pressable style={styles.iconContainer}>
-              <AppleLogoSVG />
+            <Pressable
+              style={{
+                ...styles.iconContainer,
+                borderColor: theme.borderColor,
+              }}
+            >
+              <AppleLogoSVG color={theme.secondary} />
             </Pressable>
-            <Pressable style={styles.iconContainer}>
+            <Pressable
+              style={{
+                ...styles.iconContainer,
+                borderColor: theme.borderColor,
+              }}
+            >
               <GoogleLogoSVG />
             </Pressable>
           </View>
@@ -85,13 +104,21 @@ const Register = () => {
           <Text
             style={{
               ...styles.signIn,
+              color: isDark ? colors.white : colors.gray,
               fontFamily: FONT_FAMILY.poppinsRegular,
             }}
           >
             Have an Account?{" "}
           </Text>
           <Pressable onPress={goBack}>
-            <Text style={styles.signUp}>Sign In</Text>
+            <Text
+              style={{
+                ...styles.signUp,
+                color: theme.primary,
+              }}
+            >
+              Sign In
+            </Text>
           </Pressable>
         </View>
       </View>

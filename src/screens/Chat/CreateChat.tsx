@@ -17,11 +17,22 @@ const CreateChat = () => {
   const { users, currentUID } = useUserData();
   const { createChat } = useChatData();
   const [newUsers, setNewUsers] = useState<IUser[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
 
   useEffect(() => {
     const newData = filter(users, (user) => user.id !== currentUID);
-    setNewUsers(newData);
-  }, []);
+    if (searchText.length > 0) {
+      const searchResult = filter(newData, (user) =>
+        user?.name?.toLowerCase().includes(searchText.toLowerCase())
+      );
+
+      setTimeout(() => {
+        setNewUsers(searchResult as any);
+      }, 600);
+    } else {
+      setNewUsers(newData);
+    }
+  }, [searchText]);
 
   const onPressUser = async (id: string) => {
     const newChat = await createChat(id);
@@ -35,7 +46,11 @@ const CreateChat = () => {
   return (
     <Page headerType="NAVIGATION" title="Create Chat">
       <View style={{ flex: 1, marginTop: 20, gap: 30 }}>
-        <SearchBar placeholder="Search" />
+        <SearchBar
+          placeholder="Search"
+          value={searchText}
+          onChangeText={setSearchText}
+        />
         <FlatList
           data={newUsers}
           contentContainerStyle={{

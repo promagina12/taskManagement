@@ -13,11 +13,13 @@ import ProfileSVG from "../../assets/AppIcon/profile";
 import { useTaskData } from "../../providers/TaskDataProvider";
 import { useTeamData } from "../../providers/TeamDataProvider";
 import { filter } from "lodash";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const ManageProfile = () => {
   const { onSignOut, currentUserData, users, currentUID } = useUserData();
   const { tasks } = useTaskData();
   const { teams } = useTeamData();
+  const { theme } = useTheme();
 
   const onLogOut = async () => {
     await onSignOut();
@@ -47,35 +49,93 @@ const ManageProfile = () => {
                 style={{ width: 100, height: 100, borderRadius: 100 }}
               />
             ) : (
-              <View style={styles.emptyProfile}>
-                <ProfileSVG size={100} color={colors.darkBlue} />
+              <View
+                style={{
+                  ...styles.emptyProfile,
+                  borderColor: theme.secondary,
+                }}
+              >
+                <ProfileSVG size={90} color={theme.secondary} />
               </View>
             )}
             <View style={Style.containerCenter}>
-              <Text style={styles.name}>{currentUserData?.name}</Text>
+              <Text
+                style={{
+                  ...styles.name,
+                  color: theme.secondary,
+                }}
+              >
+                {currentUserData?.name}
+              </Text>
               <Text style={styles.email}>@{currentUserData?.username}</Text>
-              <Pressable style={styles.buttonContainer}>
-                <Text style={styles.buttonText}>View Profile</Text>
+              <Pressable
+                style={{
+                  ...styles.buttonContainer,
+                  borderColor: theme.primary,
+                }}
+              >
+                <Text
+                  style={{
+                    ...styles.buttonText,
+                    color: theme.secondary,
+                  }}
+                >
+                  View Profile
+                </Text>
               </Pressable>
             </View>
           </View>
           <View style={{ gap: 15 }}>
-            <Text style={styles.manage}>Workspace</Text>
-            <View style={styles.uiDesignContainer}>
-              <Text style={styles.uiDesign}>Ui Design</Text>
+            <Text
+              style={{
+                ...styles.manage,
+                color: theme.secondary,
+              }}
+            >
+              Workspace
+            </Text>
+            <View
+              style={{
+                ...styles.uiDesignContainer,
+                borderColor: theme.borderColor,
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.uiDesign,
+                  color: theme.secondary,
+                }}
+              >
+                Ui Design
+              </Text>
               <Pressable
                 style={{
                   ...styles.buttonContainer,
                   marginTop: 0,
+                  borderColor: theme.primary,
                 }}
               >
-                <Text style={styles.buttonText}>Invite</Text>
+                <Text
+                  style={{
+                    ...styles.buttonText,
+                    color: theme.secondary,
+                  }}
+                >
+                  Invite
+                </Text>
               </Pressable>
             </View>
           </View>
         </View>
         <View style={{ gap: 15 }}>
-          <Text style={styles.manage}>Manage</Text>
+          <Text
+            style={{
+              ...styles.manage,
+              color: theme.secondary,
+            }}
+          >
+            Manage
+          </Text>
           <View style={{ gap: 16 }}>
             <View
               style={{

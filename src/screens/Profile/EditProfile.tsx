@@ -16,9 +16,11 @@ import { profileSchema } from "../../utils/schema";
 import Toast from "react-native-toast-message";
 import { goBack } from "../../navigation/NavigationService";
 import * as ImagePicker from "expo-image-picker";
+import { useTheme } from "../../providers/ThemeProvider";
 
 const EditProfile = () => {
   const { currentUserData, updateUserbyId, currentUID } = useUserData();
+  const { theme } = useTheme();
   const [img, setImg] = useState<string | null>(null);
 
   const {
@@ -119,7 +121,14 @@ const EditProfile = () => {
       title="Edit Profile"
       rightComponent={() => (
         <Pressable onPress={onSubmit}>
-          <Text style={styles.save}>Save</Text>
+          <Text
+            style={{
+              ...styles.save,
+              color: theme.primary,
+            }}
+          >
+            Save
+          </Text>
         </Pressable>
       )}
     >
@@ -131,11 +140,22 @@ const EditProfile = () => {
               style={{ width: 132, height: 132, borderRadius: 100 }}
             />
           ) : (
-            <View style={styles.emptyProfile}>
-              <ProfileSVG size={132} color={colors.darkBlue} />
+            <View
+              style={{
+                ...styles.emptyProfile,
+                borderColor: theme.secondary,
+              }}
+            >
+              <ProfileSVG size={122} color={theme.secondary} />
             </View>
           )}
-          <Pressable style={styles.cameraContainer} onPress={onPressImage}>
+          <Pressable
+            style={{
+              ...styles.cameraContainer,
+              borderColor: theme.background,
+            }}
+            onPress={onPressImage}
+          >
             <CameraSVG size={18} color={colors.white} />
           </Pressable>
         </View>
